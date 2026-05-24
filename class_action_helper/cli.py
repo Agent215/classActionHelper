@@ -55,7 +55,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="claim_assistant.py")
+    parser = argparse.ArgumentParser(prog="claimBot")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     subcommands.add_parser("init-profile").set_defaults(func=cmd_init_profile)

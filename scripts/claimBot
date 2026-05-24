@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="/home/brahm/Dev/classActionBot"
+PYTHON="$PROJECT_ROOT/.venv/bin/python"
+
+if [[ ! -x "$PYTHON" ]]; then
+  echo "claimBot: missing project venv at $PYTHON" >&2
+  echo "Run: cd $PROJECT_ROOT && python -m venv .venv && .venv/bin/pip install -r requirements.txt" >&2
+  exit 1
+fi
+
+cd "$PROJECT_ROOT"
+exec "$PYTHON" "$PROJECT_ROOT/claim_assistant.py" "$@"

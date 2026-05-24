@@ -9,7 +9,9 @@ dependencies = [
   "rich>=13.0",
 ]
 
+[project.scripts]
+claimBot = "class_action_helper.cli:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-

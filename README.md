@@ -11,6 +11,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
+install -m 755 scripts/claimBot ~/.local/bin/claimBot
 ```
 
 ## Private Profile
@@ -45,6 +46,9 @@ ZELLE_EMAIL_OR_PHONE=
 ## Common Commands
 
 ```bash
+claimBot --help
+claimBot setup
+claimBot list
 python claim_assistant.py setup
 python claim_assistant.py init-profile
 python claim_assistant.py add
@@ -56,6 +60,8 @@ python claim_assistant.py apply --id example-settlement
 python claim_assistant.py manual-submit --id example-settlement
 python claim_assistant.py export
 ```
+
+After installing the local launcher, `claimBot` is equivalent to `python claim_assistant.py` and can be run from any directory.
 
 `manual-submit` opens the browser and helps prefill fields, but it never attempts final submission. After you submit manually, it asks for a confirmation number and updates `settlements.yaml`.
 
