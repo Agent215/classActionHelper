@@ -1,0 +1,365 @@
+We are in a new empty directory. Build the entire project from scratch.
+
+Project name:
+class-action-helper
+
+Purpose:
+Create a local-only command-line tool that helps me manage and semi-automate applying for class action settlements that I may personally qualify for.
+
+I am the only intended user. I will provide my own personal information locally. I want the tool to use browser automation to prefill forms and, when possible, submit the form only after showing me a final review screen and asking for explicit approval. Nothing should be deployed. No server. No cloud database. No hosted app.
+
+Important legal/safety boundaries:
+- This tool is only for my own legitimate claims.
+- The tool must never invent eligibility, purchases, dates, proof, notice IDs, account numbers, phone numbers, email addresses, addresses, or supporting documentation.
+- The tool must never submit a claim unless I explicitly approve that specific claim in that specific session.
+- The tool must never mass-submit claims.
+- The tool must never submit duplicate claims.
+- The tool must not claim I qualify. It should ask me eligibility questions and store my answers.
+- The tool must clearly warn me when a form includes a certification, declaration, penalty-of-perjury statement, or similar legal attestation.
+- If the automation cannot confidently identify the correct submit button, it should stop and ask me to submit manually.
+
+Technology:
+- Use Python 3.
+- Use Playwright for browser automation.
+- Use PyYAML for local YAML storage.
+- Use argparse or Typer, whichever keeps the project clean and simple.
+- Use Rich for nicer terminal output if helpful.
+- Keep the project simple and maintainable.
+- No web server.
+- No database unless you strongly justify it. Prefer YAML/JSON files.
+- Browser should run non-headless by default.
+- Use a persistent local browser profile directory so cookies/session can persist locally if I choose.
+
+Git requirements:
+- Initialize a git repository.
+- Rename the default branch to main if needed.
+- Create an initial commit after building the project.
+- Use SSH for any remote setup.
+- If environment variable GIT_REMOTE_SSH is set, add it as origin and push the initial commit using SSH.
+- If GIT_REMOTE_SSH is not set, do not create a remote. Print these instructions at the end:
+  git remote add origin git@github.com:OWNER/REPO.git
+  git push -u origin main
+- Do not use HTTPS git remotes.
+
+File structure:
+Create something like this:
+
+class-action-helper/
+  README.md
+  requirements.txt
+  pyproject.toml if useful
+  .gitignore
+  settlements.yaml
+  profile.local.example.json
+  claim_assistant.py
+  class_action_helper/
+    __init__.py
+    models.py
+    storage.py
+    browser.py
+    eligibility.py
+    cli.py
+    safety.py
+  tests/
+    test_validation.py
+  screenshots/
+  confirmations/
+  browser-profile/
+
+Gitignore:
+Exclude:
+- .venv/
+- __pycache__/
+- .pytest_cache/
+- browser-profile/
+- screenshots/
+- confirmations/
+- profile.local.json
+- *.log
+- .env
+- dist/
+- build/
+
+Private profile:
+Create profile.local.example.json with placeholders only.
+
+Fields:
+{
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "phone": "",
+  "address1": "",
+  "address2": "",
+  "city": "Philadelphia",
+  "state": "PA",
+  "zip": "",
+  "country": "United States",
+  "payment_preference": "",
+  "paypal_email": "",
+  "venmo": "",
+  "zelle_email_or_phone": ""
+}
+
+The real private file should be profile.local.json and must be gitignored.
+
+Settlement storage:
+Create settlements.yaml with placeholder examples only.
+
+Each settlement should support these fields:
+- id
+- name
+- official_url
+- deadline
+- class_period_start
+- class_period_end
+- eligibility_summary
+- requires_notice_id
+- requires_proof
+- requires_login
+- has_captcha_or_bot_check
+- expected_benefit
+- status
+- confirmation_number
+- confirmation_file
+- notes
+- eligibility_questions
+- eligibility_answers
+- form_strategy
+- created_at
+- updated_at
+- history
+
+Statuses:
+- todo
+- needs_review
+- eligible
+- not_eligible
+- needs_notice_id
+- needs_proof
+- needs_login
+- needs_manual_action
+- started
+- ready_for_review
+- submitted
+- skipped
+- expired
+- error
+
+Eligibility:
+Add an interactive eligibility flow.
+For each settlement, eligibility_questions should be a list of questions with ids.
+Example:
+eligibility_questions:
+  - id: purchased_product
+    question: Did you personally buy the covered product during the class period?
+    type: yes_no
+  - id: purchase_state
+    question: Was the purchase made while you lived in or ordered from an eligible state?
+    type: text
+  - id: has_notice_id
+    question: Did you receive a notice ID or claim ID?
+    type: yes_no
+  - id: notice_id
+    question: Enter notice ID if available.
+    type: secret_or_text
+
+The tool should save my answers locally.
+The tool should not decide eligibility on its own unless the settlement config provides clear rule logic.
+The tool should summarize my answers before allowing submission.
+
+Commands:
+Implement these commands:
+
+1. python claim_assistant.py init-profile
+   - Copy profile.local.example.json to profile.local.json if it does not exist.
+   - Warn me that profile.local.json is private and gitignored.
+
+2. python claim_assistant.py list
+   - Show all settlements sorted by deadline.
+   - Show status, deadline, days remaining, whether proof is required, whether notice ID is required.
+   - Highlight expired or soon-deadline items.
+
+3. python claim_assistant.py add
+   - Interactive prompt to add a new settlement manually.
+   - Ask for name, official URL, deadline, eligibility summary, proof requirements, notice ID requirements, login requirement, expected benefit, notes.
+   - Generate a clean id from the name.
+   - Validate the URL and date format.
+   - Save to settlements.yaml.
+
+4. python claim_assistant.py edit --id SETTLEMENT_ID
+   - Let me update settlement fields.
+
+5. python claim_assistant.py validate
+   - Validate settlements.yaml.
+   - Check required fields.
+   - Check valid deadline dates.
+   - Check duplicate IDs.
+   - Check invalid statuses.
+   - Check malformed URLs.
+   - Warn about expired claims.
+   - Validate profile.local.json if present.
+   - Exit nonzero on serious errors.
+
+6. python claim_assistant.py eligibility --id SETTLEMENT_ID
+   - Ask the configured eligibility questions.
+   - Store answers in settlements.yaml.
+   - Set status to eligible, not_eligible, needs_notice_id, needs_proof, or needs_review depending on answers and config.
+   - Never fake or infer answers.
+
+7. python claim_assistant.py apply --id SETTLEMENT_ID
+   - Load profile.local.json.
+   - Load settlement.
+   - Refuse to proceed if expired unless I explicitly override with --allow-expired.
+   - Open official_url in non-headless Chromium using Playwright.
+   - Use a persistent user data dir browser-profile/.
+   - If needed, ask me to navigate to the actual claim form and press Enter.
+   - Best-effort prefill common fields:
+     first name, last name, full name, email, phone, address 1, address 2, city, state, zip, country, payment preference.
+   - Use labels, placeholders, aria-labels, name attributes, ids, and common selectors.
+   - Do not overfill ambiguous fields.
+   - For checkboxes/radio buttons, only interact when the field mapping is explicitly configured in the settlement form_strategy or after asking me.
+   - Save a pre-review screenshot to screenshots/.
+   - Print a final review summary in the terminal:
+     settlement name
+     official URL
+     deadline
+     eligibility summary
+     my eligibility answers
+     profile fields that were filled
+     fields that could not be filled
+     warnings about proof, notice ID, login, CAPTCHA, or certification
+   - Then ask:
+     Type REVIEWED to continue to submission options, or anything else to stop.
+   - If I type REVIEWED, ask:
+     Do you want the tool to attempt final submission for this claim? Type SUBMIT <settlement-id> to approve.
+   - Only if I type exactly SUBMIT <settlement-id>, the tool may attempt to submit.
+   - Before clicking submit, the tool should look for submit-like buttons but avoid anything ambiguous.
+   - Never click submit if the page has visible CAPTCHA or bot check.
+   - Never click submit if a required certification checkbox is unchecked unless I explicitly approve checking that exact checkbox.
+   - If the page includes a certification checkbox, show me the checkbox label text and ask:
+     Type CERTIFY <settlement-id> if you personally certify this statement is true and want me to check it.
+   - Only then check it.
+   - Attempt final submit only once.
+   - Save a post-submit screenshot to screenshots/.
+   - Ask me to enter the confirmation number or type none.
+   - Save confirmation number, timestamp, screenshot path, and status submitted in settlements.yaml.
+   - If submission fails or is uncertain, set status to needs_manual_action or error and explain what happened.
+
+8. python claim_assistant.py manual-submit --id SETTLEMENT_ID
+   - Open the site and prefill fields, but never attempt final submit.
+   - After I manually submit, prompt me for confirmation number and update the record.
+
+9. python claim_assistant.py mark --id SETTLEMENT_ID --status STATUS
+   - Manually mark status.
+   - Optional --note.
+
+10. python claim_assistant.py export
+   - Export a local CSV summary of settlements and statuses.
+
+Browser automation details:
+- Implement a browser.py module.
+- Use Playwright sync API unless async is cleaner.
+- Launch persistent context:
+  browser-profile/
+  headless=False
+- Use slow_mo optionally via CLI flag.
+- Add --headed/--headless flags but default to headed.
+- Add --dry-run flag that opens and analyzes but does not fill or submit.
+- Add --no-submit flag that disables final submit even if I approve.
+
+Field filling:
+Implement careful best-effort fill logic.
+For each profile field, try:
+- get_by_label
+- get_by_placeholder
+- locator by input[name*=...]
+- locator by input[id*=...]
+- aria labels
+Do not fill hidden fields.
+Do not overwrite non-empty fields unless --overwrite is passed.
+Do not fill fields where multiple matches are ambiguous.
+Log what was filled and what was skipped.
+
+Submission guard:
+Create a safety.py module with a SubmissionGuard class.
+The guard should require:
+- settlement is not already submitted
+- eligibility answers exist or I explicitly override
+- exact typed confirmation SUBMIT <id>
+- no visible CAPTCHA/bot-check detected
+- no unresolved notice ID/proof/login requirement
+- visible final page screenshot saved before submit
+- if certification text exists, exact typed certification approval CERTIFY <id>
+
+The submit function should return a structured result:
+- submitted_confirmed
+- submitted_uncertain
+- blocked
+- manual_required
+- error
+
+README:
+Write a README that includes:
+- What the tool does
+- What the tool does not do
+- Legal/safety warning that I am responsible for truthful claims
+- Installation:
+  python -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  playwright install chromium
+- Usage examples:
+  python claim_assistant.py init-profile
+  python claim_assistant.py add
+  python claim_assistant.py validate
+  python claim_assistant.py list
+  python claim_assistant.py eligibility --id example-settlement
+  python claim_assistant.py apply --id example-settlement
+  python claim_assistant.py manual-submit --id example-settlement
+  python claim_assistant.py export
+- Explain the difference between manual-submit and apply.
+- Explain how final submission approval works.
+- Explain where screenshots and confirmations are stored.
+- Explain how to add a GitHub SSH remote later.
+
+Testing:
+- Add pytest tests for:
+  - validation catches duplicate IDs
+  - validation catches invalid statuses
+  - validation catches invalid dates
+  - expired settlement detection
+  - status transitions
+  - SubmissionGuard blocks submitted settlements
+  - SubmissionGuard blocks when notice ID is required but missing
+  - SubmissionGuard requires exact typed submit phrase
+- Keep tests local and fast.
+- Do not require real browser in unit tests unless separated.
+
+Code quality:
+- Use type hints where reasonable.
+- Keep functions small.
+- Handle missing files gracefully.
+- Use clear terminal output.
+- Avoid unnecessary dependencies.
+- Do not include real personal information.
+- Do not include real class action URLs except obviously fake placeholder domains like https://example.com/claim.
+
+After implementation:
+- Run python claim_assistant.py validate.
+- Run pytest if pytest is installed or add it to requirements and run it.
+- Run a basic smoke test like python claim_assistant.py list.
+- Make sure .gitignore prevents private/local output from being committed.
+- Initialize git, add files, commit with message:
+  Initial local class action helper
+- If GIT_REMOTE_SSH is set, add it as origin and push using SSH.
+- If not set, print the SSH remote commands I can run later.
+
+Important final behavior:
+At the end, summarize:
+- Files created
+- Commands run
+- Test/validation results
+- How to create profile.local.json
+- How to add my first real settlement
+- How to run an assisted application

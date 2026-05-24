@@ -1,0 +1,15 @@
+[project]
+name = "class-action-helper"
+version = "0.1.0"
+description = "Local-only command-line helper for managing personal class action settlement claims."
+requires-python = ">=3.10"
+dependencies = [
+  "playwright>=1.44",
+  "PyYAML>=6.0",
+  "rich>=13.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
