@@ -26,6 +26,15 @@ from .storage import ensure_local_dirs, load_settlements
 
 console = Console()
 
+CLAIMBOT_BANNER = r"""
+_________ .__         .__       __________        __
+\_   ___ \|  | _____  |__| _____\______   \ _____/  |_
+/    \  \/|  | \__  \ |  |/     \|    |  _//  _ \   __\
+\     \___|  |__/ __ \|  |  Y Y  \    |   (  <_> )  |
+ \______  /____(____  /__|__|_|  /______  /\____/|__|
+        \/          \/         \/       \/
+""".strip("\n")
+
 
 def run_tui() -> int:
     ensure_local_dirs()
@@ -73,6 +82,7 @@ def _render_dashboard(settlements: list[dict[str, Any]]) -> None:
     actionable = sum(1 for item in settlements if item.get("status") not in {"submitted", "skipped", "not_eligible", "error"})
     due_soon = sum(1 for item in settlements if _days(item) is not None and 0 <= _days(item) <= 14)
     header = f"Settlements: {total} | Actionable: {actionable} | Submitted: {submitted} | Due in 14 days: {due_soon}"
+    console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
     console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | k mark | i import | v validate | x export | q quit"))
 
     table = Table(title="Next Settlements By Deadline")
