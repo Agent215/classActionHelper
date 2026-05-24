@@ -5,7 +5,7 @@ browser-profile/
 screenshots/
 confirmations/
 profile.local.json
-possible_class_action_settlements_tracker.csv
+possible_class_action_settlements_tracker*.csv
 settlements-export.csv
 *.log
 .env

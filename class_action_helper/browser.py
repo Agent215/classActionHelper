@@ -71,7 +71,8 @@ def run_assisted_application(
         )
         try:
             page = context.pages[0] if context.pages else context.new_page()
-            page.goto(str(settlement["official_url"]), wait_until="domcontentloaded", timeout=60000)
+            target_url = str(settlement.get("claim_form_url") or settlement["official_url"])
+            page.goto(target_url, wait_until="domcontentloaded", timeout=60000)
             print("Browser opened. If this is not the claim form, navigate to the form and press Enter.")
             input("Press Enter when the claim form is visible: ")
 
@@ -180,6 +181,8 @@ def print_review_summary(settlement: dict[str, Any], report: FillReport) -> None
     print("\nFinal review summary")
     print(f"Settlement: {settlement.get('name')}")
     print(f"Official URL: {settlement.get('official_url')}")
+    if settlement.get("claim_form_url"):
+        print(f"Claim form URL: {settlement.get('claim_form_url')}")
     print(f"Deadline: {settlement.get('deadline')}")
     print(f"Eligibility summary: {settlement.get('eligibility_summary')}")
     print(f"Eligibility answers: {settlement.get('eligibility_answers') or {}}")
@@ -336,4 +339,3 @@ def _fill_locator(locator: Any, value: str, overwrite: bool) -> bool:
         return True
     except Exception:
         return False
-

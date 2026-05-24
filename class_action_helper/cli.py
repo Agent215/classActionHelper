@@ -265,11 +265,16 @@ def import_csv_file(source: Path) -> tuple[int, int]:
                 continue
             settlement_id = raw_id
             official_url = (row.get("official_or_info_url") or "").strip() or "https://example.com/claim"
+            claim_form_url = (row.get("claim_form_url") or "").strip()
             status = _status_from_hint(row.get("status_hint", ""))
             imported_settlement = {
                 "id": settlement_id,
                 "name": (row.get("name") or settlement_id).strip(),
                 "official_url": official_url,
+                "claim_form_url": claim_form_url,
+                "source_url": (row.get("source_url") or "").strip(),
+                "url_confidence": (row.get("url_confidence") or "").strip(),
+                "url_verified_date": (row.get("url_verified_date") or "").strip(),
                 "deadline": (row.get("deadline") or "").strip(),
                 "class_period_start": "",
                 "class_period_end": "",
@@ -302,6 +307,10 @@ def import_csv_file(source: Path) -> tuple[int, int]:
                     "requires_login",
                     "expected_benefit",
                     "notes",
+                    "claim_form_url",
+                    "source_url",
+                    "url_confidence",
+                    "url_verified_date",
                     "eligibility_questions",
                 ):
                     existing[field] = imported_settlement[field]
@@ -422,8 +431,9 @@ def _run_browser_flow(args: argparse.Namespace, *, manual_only: bool) -> int:
     settlements = load_settlements()
     settlement = _require_settlement(settlements, args.id)
 
-    if is_placeholder_url(settlement.get("official_url")):
-        _print("This settlement still has a placeholder URL. Replace official_url before applying.")
+    target_url = settlement.get("claim_form_url") or settlement.get("official_url")
+    if is_placeholder_url(target_url):
+        _print("This settlement still has a placeholder URL. Replace official_url or claim_form_url before applying.")
         return 1
 
     if is_expired(settlement) and not args.allow_expired:
@@ -553,7 +563,15 @@ def _csv_truthy(value: str) -> bool:
 
 def _csv_notes(row: dict[str, str]) -> str:
     parts = []
-    for field in ("category", "geography_relevance", "priority_for_brahm", "automation_notes", "source_note"):
+    for field in (
+        "category",
+        "geography_relevance",
+        "priority_for_brahm",
+        "automation_notes",
+        "source_note",
+        "url_confidence",
+        "url_verified_date",
+    ):
         value = (row.get(field) or "").strip()
         if value:
             parts.append(f"{field}: {value}")

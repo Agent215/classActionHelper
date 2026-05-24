@@ -39,7 +39,7 @@
   history: []
 - id: amazon-prime-ftc-refund
   name: Amazon Prime FTC refund
-  official_url: https://www.ftc.gov/enforcement/refunds/amazon-refunds
+  official_url: https://www.subscriptionmembershipsettlement.com/
   deadline: '2026-07-27'
   class_period_start: ''
   class_period_end: ''
@@ -64,7 +64,12 @@
     automation_notes: Search email for FTC/Amazon notice. Do not submit unless notice/eligibility
     is confirmed.
 
-    source_note: From earlier assistant list; verify on official site before filing.'
+    source_note: From earlier assistant list; verify on official site before filing.
+
+    url_confidence: official settlement homepage found; claim portal linked from official
+    site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -88,13 +93,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://veritaconnect.com/subscriptionmembershipsettlement
+  source_url: https://www.subscriptionmembershipsettlement.com/
+  url_confidence: official settlement homepage found; claim portal linked from official
+    site
+  url_verified_date: '2026-05-24'
 - id: google-android-cellular-data
   name: Google Android cellular-data settlement
-  official_url: https://example.com/claim
+  official_url: https://www.federalcellularclassaction.com/
   deadline: '2026-06-23'
   class_period_start: ''
   class_period_end: ''
@@ -121,8 +133,9 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; payment-election page found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -140,13 +153,19 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.federalcellularclassaction.com/payment-election
+  source_url: https://www.federalcellularclassaction.com/
+  url_confidence: official settlement homepage found; payment-election page found
+  url_verified_date: '2026-05-24'
 - id: google-assistant-privacy
   name: Google Assistant privacy settlement
-  official_url: https://example.com/claim
+  official_url: https://www.googleassistantprivacylitigation.com/
   deadline: '2026-08-27'
   class_period_start: ''
   class_period_end: ''
@@ -173,8 +192,9 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim page found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -192,10 +212,16 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.googleassistantprivacylitigation.com/file
+  source_url: https://www.googleassistantprivacylitigation.com/
+  url_confidence: official settlement homepage and claim page found
+  url_verified_date: '2026-05-24'
 - id: toms-of-maine-toothpaste
   name: Tom's of Maine toothpaste settlement
   official_url: https://www.toothpastesettlement.com/
@@ -222,7 +248,11 @@
     automation_notes: Good candidate for manual-submit or approved apply flow if you
     actually bought covered product.
 
-    source_note: From earlier assistant list; verify on official site before filing.'
+    source_note: From earlier assistant list; verify on official site before filing.
+
+    url_confidence: official settlement homepage and claim-login page found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -237,13 +267,19 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.toothpastesettlement.com/Login
+  source_url: https://www.toothpastesettlement.com/
+  url_confidence: official settlement homepage and claim-login page found
+  url_verified_date: '2026-05-24'
 - id: team-group-t-force-dram
   name: Team Group / T-Force DRAM settlement
-  official_url: https://example.com/claim
+  official_url: https://www.teamgroupdramsettlement.com/
   deadline: '2026-07-07'
   class_period_start: ''
   class_period_end: ''
@@ -270,8 +306,9 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and submit-claim page found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -286,13 +323,19 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.teamgroupdramsettlement.com/submit-claim
+  source_url: https://www.teamgroupdramsettlement.com/
+  url_confidence: official settlement homepage and submit-claim page found
+  url_verified_date: '2026-05-24'
 - id: trader-joes-facta-receipt
   name: Trader Joe's receipt privacy / FACTA settlement
-  official_url: https://example.com/claim
+  official_url: https://www.tj-factasettlement.com/
   deadline: '2026-06-09'
   class_period_start: ''
   class_period_end: ''
@@ -319,8 +362,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; claim portal linked from official
+    site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -344,13 +389,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://veritaconnect.com/tj-factasettlement
+  source_url: https://www.tj-factasettlement.com/
+  url_confidence: official settlement homepage found; claim portal linked from official
+    site
+  url_verified_date: '2026-05-24'
 - id: fanatics-handling-fee
   name: Fanatics handling-fee settlement
-  official_url: https://example.com/claim
+  official_url: https://handlingfeesettlement.com/
   deadline: '2026-08-27'
   class_period_start: ''
   class_period_end: ''
@@ -375,8 +427,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim-form page found; claim
+    form is hosted via Formstack
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -394,13 +448,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://handlingfeesettlement.com/claim-form/
+  source_url: https://handlingfeesettlement.com/
+  url_confidence: official settlement homepage and claim-form page found; claim form
+    is hosted via Formstack
+  url_verified_date: '2026-05-24'
 - id: european-wax-center-web-privacy
   name: European Wax Center web privacy settlement
-  official_url: https://example.com/claim
+  official_url: https://ewcdigitalsettlement.com/
   deadline: '2026-06-30'
   class_period_start: ''
   class_period_end: ''
@@ -425,8 +486,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -444,13 +507,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/cumor_v_europeanwaxcenter_claimform/new?form-version=1
+  source_url: https://ewcdigitalsettlement.com/
+  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+  url_verified_date: '2026-05-24'
 - id: psea-data-breach
   name: PSEA data breach settlement
-  official_url: https://example.com/claim
+  official_url: https://www.pseadatasettlement.com/
   deadline: '2026-07-06'
   class_period_start: ''
   class_period_end: ''
@@ -476,8 +546,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and filing-instructions page found;
+    external portal requires class member ID/PIN
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -501,13 +573,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.pseadatasettlement.com/claims_filing.html
+  source_url: https://www.pseadatasettlement.com/
+  url_confidence: official settlement homepage and filing-instructions page found;
+    external portal requires class member ID/PIN
+  url_verified_date: '2026-05-24'
 - id: sportsmans-warehouse-pa-privacy
   name: Sportsman's Warehouse Pennsylvania privacy settlement
-  official_url: https://example.com/claim
+  official_url: https://swufasettlement.com/
   deadline: '2026-06-19'
   class_period_start: ''
   class_period_end: ''
@@ -533,8 +612,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -555,13 +636,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://swufasettlement.com/form/claim/
+  source_url: https://swufasettlement.com/
+  url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+  url_verified_date: '2026-05-24'
 - id: drexel-covid-tuition
   name: Drexel University COVID tuition settlement
-  official_url: https://example.com/claim
+  official_url: https://www.drexelcovidsettlement.com/
   deadline: '2026-06-25'
   class_period_start: ''
   class_period_end: ''
@@ -586,8 +674,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; election form is linked from
+    official site and appears to require class member code/PIN
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -614,14 +704,21 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://www.claimsettlementportal.com/surveys/election/home.aspx
+  source_url: https://www.drexelcovidsettlement.com/
+  url_confidence: official settlement homepage found; election form is linked from
+    official site and appears to require class member code/PIN
+  url_verified_date: '2026-05-24'
 - id: comcast-xfinity-data-breach
   name: Comcast / Xfinity data breach settlement
   official_url: https://www.comcastbreachsettlement.com/
-  deadline: '2026-08-14'
+  deadline: '2026-09-14'
   class_period_start: ''
   class_period_end: ''
   eligibility_summary: Possible if you got a notice that your information may have
@@ -643,7 +740,11 @@
 
     automation_notes: Search email/mail for Xfinity/Comcast notice before attempting.
 
-    source_note: From earlier assistant list; verify on official site before filing.'
+    source_note: From earlier assistant list; verify on official site before filing.
+
+    url_confidence: official settlement homepage and Kroll/KSACMS claim form found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -667,13 +768,19 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/comcastbreachsettlement_claimform/new?form-version=1
+  source_url: https://www.comcastbreachsettlement.com/
+  url_confidence: official settlement homepage and Kroll/KSACMS claim form found
+  url_verified_date: '2026-05-24'
 - id: krispy-kreme-data-breach
   name: Krispy Kreme data breach settlement
-  official_url: https://example.com/claim
+  official_url: https://krispykremedatasettlement.com/
   deadline: '2026-06-22'
   class_period_start: ''
   class_period_end: ''
@@ -699,8 +806,9 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim-login page found
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -724,13 +832,19 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://krispykremedatasettlement.com/Login
+  source_url: https://krispykremedatasettlement.com/
+  url_confidence: official settlement homepage and claim-login page found
+  url_verified_date: '2026-05-24'
 - id: circle-k-data-breach
   name: Circle K data breach settlement
-  official_url: https://example.com/claim
+  official_url: https://gasexpressdatasettlement.com/
   deadline: '2026-09-03'
   class_period_start: ''
   class_period_end: ''
@@ -757,8 +871,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -782,13 +898,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://gasexpressdatasettlement.com/form/claim/
+  source_url: https://gasexpressdatasettlement.com/
+  url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+  url_verified_date: '2026-05-24'
 - id: register-com-robocalls
   name: Register.com robocall settlement
-  official_url: https://example.com/claim
+  official_url: https://www.registertcpasettlement.com/
   deadline: '2026-06-15'
   class_period_start: ''
   class_period_end: ''
@@ -815,8 +938,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -843,13 +968,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/registerTCPAsettlement_claimform/new?form-version=1
+  source_url: https://www.registertcpasettlement.com/
+  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+  url_verified_date: '2026-05-24'
 - id: motive-technologies-robocall
   name: Motive Technologies robocall settlement
-  official_url: https://example.com/claim
+  official_url: https://dashcamcallingsettlement.com/
   deadline: '2026-07-06'
   class_period_start: ''
   class_period_end: ''
@@ -875,8 +1007,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -903,13 +1037,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/dashcamcallingsettlement_claimform/new?form-version=1
+  source_url: https://dashcamcallingsettlement.com/
+  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+  url_verified_date: '2026-05-24'
 - id: hy-cite-enterprises-tcpa
   name: Hy Cite Enterprises TCPA settlement
-  official_url: https://example.com/claim
+  official_url: https://hycitetcpasettlement.com/
   deadline: '2026-07-08'
   class_period_start: ''
   class_period_end: ''
@@ -935,8 +1076,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -963,13 +1106,20 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/HyCiteTCPAsettlement_claimform/new?form-version=1
+  source_url: https://hycitetcpasettlement.com/
+  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    from official site
+  url_verified_date: '2026-05-24'
 - id: southern-illinois-healthcare-myChart
   name: Southern Illinois Healthcare MyChart privacy settlement
-  official_url: https://example.com/claim
+  official_url: https://southernillinoishealthpixelsettlement.com/
   deadline: '2026-06-15'
   class_period_start: ''
   class_period_end: ''
@@ -994,8 +1144,10 @@
     source_note: From earlier assistant list; verify current official settlement site
     before filing.
 
-    official_url_missing: Find and verify the official settlement claim site before
-    applying.'
+    url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+
+    url_verified_date: 2026-05-24'
   eligibility_questions:
   - id: personally_matches_class
     question: Based on the official settlement notice, do you personally match the
@@ -1019,7 +1171,14 @@
     checkboxes: {}
     radios: {}
   created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:11:18+00:00'
+  updated_at: '2026-05-24T20:31:38+00:00'
   history:
   - at: '2026-05-24T20:11:18+00:00'
     message: Imported from possible_class_action_settlements_tracker.csv.
+  - at: '2026-05-24T20:31:38+00:00'
+    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
+  claim_form_url: https://southernillinoishealthpixelsettlement.com/form/claim
+  source_url: https://southernillinoishealthpixelsettlement.com/
+  url_confidence: official settlement homepage and claim-login page found; requires
+    Unique ID/PIN from notice
+  url_verified_date: '2026-05-24'

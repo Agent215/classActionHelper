@@ -115,6 +115,9 @@ python claim_assistant.py import-csv /home/brahm/Downloads/possible_class_action
 
 Rows without an official URL are imported with `https://example.com/claim` and are blocked from `apply` or `manual-submit` until you replace `official_url` with a verified official claim site.
 
+If the CSV includes `claim_form_url`, browser flows open that URL while still keeping
+`official_url` for the settlement homepage and final review summary.
+
 ## GitHub SSH Remote
 
 This project does not create HTTPS remotes. To add a GitHub remote later:
