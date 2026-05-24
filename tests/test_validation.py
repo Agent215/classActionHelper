@@ -115,6 +115,20 @@ def test_parser_includes_tui_command():
     assert args.func.__name__ == "cmd_tui"
 
 
+def test_main_defaults_to_tui(monkeypatch):
+    called = {}
+
+    def fake_tui() -> int:
+        called["ran"] = True
+        return 0
+
+    monkeypatch.setattr("class_action_helper.tui.run_tui", fake_tui)
+    from class_action_helper.cli import main
+
+    assert main([]) == 0
+    assert called["ran"] is True
+
+
 def test_auto_submit_queue_only_includes_no_evidence_ready_claims():
     settlements = [
         settlement(

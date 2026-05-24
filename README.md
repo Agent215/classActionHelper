@@ -55,6 +55,7 @@ ZELLE_EMAIL_OR_PHONE=
 ## Common Commands
 
 ```bash
+claimBot
 claimBot --help
 claimBot setup
 claimBot tui
@@ -75,6 +76,9 @@ python claim_assistant.py export
 ```
 
 After installing the local launcher, `claimBot` is equivalent to `python claim_assistant.py` and can be run from any directory.
+
+Running `claimbot` with no arguments opens the TUI by default. `claimbot tui`
+does the same thing explicitly.
 
 `claimbot tui` opens a menu-driven terminal UI for dashboard review, queue work,
 eligibility, manual submit, apply, mark, import, validate, and export.

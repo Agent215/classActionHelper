@@ -50,6 +50,10 @@ console = Console() if Console else None
 
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
+    if argv is None:
+        argv = sys.argv[1:]
+    if not argv:
+        argv = ["tui"]
     args = parser.parse_args(argv)
     return args.func(args)
 
