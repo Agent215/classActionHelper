@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from rich.console import Console
+from rich.live import Live
 from rich.panel import Panel
 from rich.prompt import Confirm, IntPrompt, Prompt
 from rich.table import Table
@@ -102,12 +103,10 @@ def _render_dashboard(settlements: list[dict[str, Any]], *, animate: bool = Fals
 
     next_settlements = _sorted_settlements(settlements)[:15]
     if animate:
-        for index in range(1, len(next_settlements) + 1):
-            console.clear()
-            console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
-            console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | k mark | i import | v validate | x export | q quit"))
-            console.print(_build_table(next_settlements[:index]))
-            time.sleep(0.035)
+        with Live(_build_table([]), console=console, refresh_per_second=30) as live:
+            for index in range(1, len(next_settlements) + 1):
+                live.update(_build_table(next_settlements[:index]))
+                time.sleep(0.035)
         return
 
     console.print(_build_table(next_settlements))
