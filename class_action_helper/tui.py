@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -39,10 +41,12 @@ _________ .__         .__       __________        __
 
 def run_tui() -> int:
     ensure_local_dirs()
+    first_render = True
     try:
         while True:
             settlements = load_settlements()
-            _render_dashboard(settlements)
+            _render_dashboard(settlements, animate=first_render and sys.stdin.isatty())
+            first_render = False
             choice = Prompt.ask(
                 "Choose",
                 choices=["w", "b", "e", "m", "a", "s", "k", "i", "v", "x", "q"],
@@ -78,7 +82,7 @@ def run_tui() -> int:
         return 130
 
 
-def _render_dashboard(settlements: list[dict[str, Any]]) -> None:
+def _render_dashboard(settlements: list[dict[str, Any]], *, animate: bool = False) -> None:
     console.clear()
     total = len(settlements)
     submitted = sum(1 for item in settlements if item.get("status") == "submitted")
@@ -86,13 +90,35 @@ def _render_dashboard(settlements: list[dict[str, Any]]) -> None:
     due_soon = sum(1 for item in settlements if _days(item) is not None and 0 <= _days(item) <= 14)
     header = f"Settlements: {total} | Actionable: {actionable} | Submitted: {submitted} | Due in 14 days: {due_soon}"
     console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
+    if animate:
+        time.sleep(0.25)
     console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | k mark | i import | v validate | x export | q quit"))
+    if animate:
+        time.sleep(0.15)
 
     table = Table(title="Next Settlements By Deadline")
     for column in ("ID", "Status", "Deadline", "Days", "Proof", "Notice", "Name"):
         table.add_column(column)
 
-    for settlement in _sorted_settlements(settlements)[:15]:
+    next_settlements = _sorted_settlements(settlements)[:15]
+    if animate:
+        for index in range(1, len(next_settlements) + 1):
+            console.clear()
+            console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
+            console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | k mark | i import | v validate | x export | q quit"))
+            console.print(_build_table(next_settlements[:index]))
+            time.sleep(0.035)
+        return
+
+    console.print(_build_table(next_settlements))
+
+
+def _build_table(settlements: list[dict[str, Any]]) -> Table:
+    table = Table(title="Next Settlements By Deadline")
+    for column in ("ID", "Status", "Deadline", "Days", "Proof", "Notice", "Name"):
+        table.add_column(column)
+
+    for settlement in settlements:
         days = _days(settlement)
         style = "red" if days is not None and days < 0 else "yellow" if days is not None and days <= 14 else ""
         table.add_row(
@@ -105,7 +131,7 @@ def _render_dashboard(settlements: list[dict[str, Any]]) -> None:
             str(settlement.get("name", "")),
             style=style,
         )
-    console.print(table)
+    return table
 
 
 def _work_next() -> None:
