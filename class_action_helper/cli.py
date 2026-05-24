@@ -14,7 +14,7 @@ except ImportError:  # pragma: no cover
     Console = None
     Table = None
 
-from .browser import run_assisted_application
+from .browser import run_assisted_application, run_auto_submit_application
 from .eligibility import apply_eligibility_answers, ask_eligibility_questions
 from .models import (
     STATUSES,
@@ -92,6 +92,14 @@ def build_parser() -> argparse.ArgumentParser:
     work.add_argument("--allow-expired", action="store_true")
     add_browser_args(work)
     work.set_defaults(func=cmd_work)
+
+    auto_submit = subcommands.add_parser("auto-submit")
+    auto_submit.add_argument("--id", help="Auto-submit one specific no-evidence settlement.")
+    auto_submit.add_argument("--bulk", action="store_true", help="Auto-submit multiple no-evidence settlements sequentially.")
+    auto_submit.add_argument("--limit", type=int, default=1)
+    auto_submit.add_argument("--allow-expired", action="store_true")
+    add_browser_args(auto_submit)
+    auto_submit.set_defaults(func=cmd_auto_submit)
 
     apply = subcommands.add_parser("apply")
     add_browser_args(apply)
@@ -487,6 +495,64 @@ def cmd_work(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_auto_submit(args: argparse.Namespace) -> int:
+    settlements = load_settlements()
+    queue = _build_auto_submit_queue(
+        settlements,
+        settlement_id=args.id,
+        limit=args.limit if args.bulk else 1,
+        allow_expired=args.allow_expired,
+    )
+    if not queue:
+        _print("No eligible no-evidence settlements are ready for auto-submit.")
+        return 0
+
+    ids = [str(item.get("id")) for item in queue]
+    _print("AUTO SUBMIT MODE")
+    _print("This mode is limited to settlements that are already eligible/ready, require no proof, no notice ID, no login, and have saved eligibility answers.")
+    _print("It will stop per claim if CAPTCHA, certification text, ambiguous submit controls, or any unresolved requirement is detected.")
+    _print("Queued claim IDs:")
+    for settlement_id in ids:
+        _print(f"- {settlement_id}")
+
+    approval_phrase = "AUTO SUBMIT " + " ".join(ids)
+    typed = input(f"Type exactly {approval_phrase!r} to approve this batch in this session: ").strip()
+    if typed != approval_phrase:
+        _print("Auto-submit batch cancelled.")
+        return 1
+
+    try:
+        profile = load_profile()
+    except Exception as exc:
+        _print(str(exc))
+        return 1
+
+    processed = 0
+    for settlement in queue:
+        settlement_id = str(settlement.get("id"))
+        _print(f"\nAuto-submitting {settlement_id}...")
+        result = run_auto_submit_application(
+            settlement,
+            profile,
+            headless=args.headless,
+            slow_mo=args.slow_mo,
+            dry_run=args.dry_run or args.no_submit,
+            overwrite=args.overwrite,
+        )
+        settlement["status"] = result.status
+        if result.confirmation_number:
+            settlement["confirmation_number"] = result.confirmation_number
+        if result.fill_report.screenshot_path:
+            settlement["confirmation_file"] = result.fill_report.screenshot_path
+        append_history(settlement, result.message or f"Auto-submit flow completed with status {result.status}.")
+        save_settlements(settlements)
+        _print(f"Updated {settlement_id}: {result.status}.")
+        processed += 1
+
+    _print(f"Auto-submit processed {processed} settlement(s).")
+    return 0
+
+
 def cmd_apply(args: argparse.Namespace) -> int:
     return _run_browser_flow(args, manual_only=False)
 
@@ -593,6 +659,45 @@ def _build_work_queue(
 
     queue.sort(key=lambda item: (parse_date(item.get("deadline")), str(item.get("id", ""))))
     return queue[: max(limit, 1)]
+
+
+def _build_auto_submit_queue(
+    settlements: list[dict[str, Any]],
+    *,
+    settlement_id: str | None,
+    limit: int,
+    allow_expired: bool,
+) -> list[dict[str, Any]]:
+    candidates = [_require_settlement(settlements, settlement_id)] if settlement_id else settlements
+    queue = []
+    for settlement in candidates:
+        if not _auto_submit_ready(settlement, allow_expired=allow_expired):
+            continue
+        queue.append(settlement)
+    queue.sort(key=lambda item: (parse_date(item.get("deadline")), str(item.get("id", ""))))
+    return queue[: max(limit, 1)]
+
+
+def _auto_submit_ready(settlement: dict[str, Any], *, allow_expired: bool) -> bool:
+    if settlement.get("status") not in {"eligible", "ready_for_review"}:
+        return False
+    if settlement.get("status") == "submitted":
+        return False
+    if not settlement.get("eligibility_answers"):
+        return False
+    if settlement.get("requires_proof") or settlement.get("requires_notice_id") or settlement.get("requires_login"):
+        return False
+    if settlement.get("has_captcha_or_bot_check"):
+        return False
+    target_url = settlement.get("claim_form_url") or settlement.get("official_url")
+    if is_placeholder_url(target_url):
+        return False
+    try:
+        if is_expired(settlement) and not allow_expired:
+            return False
+    except Exception:
+        return False
+    return True
 
 
 def _needs_eligibility(settlement: dict[str, Any]) -> bool:

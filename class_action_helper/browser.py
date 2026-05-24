@@ -145,6 +145,79 @@ def run_assisted_application(
             context.close()
 
 
+def run_auto_submit_application(
+    settlement: dict[str, Any],
+    profile: dict[str, Any],
+    *,
+    headless: bool = False,
+    slow_mo: int = 0,
+    dry_run: bool = False,
+    overwrite: bool = False,
+) -> BrowserRunResult:
+    try:
+        from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise RuntimeError("Playwright is not installed. Run pip install -r requirements.txt.") from exc
+
+    ensure_local_dirs()
+    fill_report = FillReport()
+
+    with sync_playwright() as playwright:
+        context = playwright.chromium.launch_persistent_context(
+            str(BROWSER_PROFILE_DIR),
+            headless=headless,
+            slow_mo=slow_mo,
+        )
+        try:
+            page = context.pages[0] if context.pages else context.new_page()
+            target_url = str(settlement.get("claim_form_url") or settlement["official_url"])
+            page.goto(target_url, wait_until="domcontentloaded", timeout=60000)
+
+            if dry_run:
+                fill_report.skipped.append("Dry run enabled; no fields were filled.")
+            else:
+                fill_report = prefill_profile(page, profile, settlement.get("form_strategy") or {}, overwrite=overwrite)
+
+            fill_report.screenshot_path = save_screenshot(page, settlement["id"], "auto-pre-submit")
+            print_review_summary(settlement, fill_report)
+
+            certification_text = detect_certification_text(page)
+            captcha_detected = detect_captcha(page)
+            guard = SubmissionGuard(settlement)
+            decision = guard.evaluate(
+                f"SUBMIT {settlement['id']}",
+                pre_submit_screenshot=fill_report.screenshot_path,
+                captcha_detected=captcha_detected,
+                certification_text=certification_text,
+                typed_certification="",
+            )
+            if not decision.allowed:
+                for reason in decision.reasons:
+                    print(f"Auto-submit blocked: {reason}")
+                return BrowserRunResult("needs_manual_action", fill_report, message="; ".join(decision.reasons))
+
+            if dry_run:
+                return BrowserRunResult("ready_for_review", fill_report, message="Dry run completed without submit.")
+
+            submit_result = attempt_submit(page, settlement["id"])
+            if submit_result.screenshot_path:
+                fill_report.screenshot_path = submit_result.screenshot_path
+            if submit_result.result in {"submitted_confirmed", "submitted_uncertain"}:
+                return BrowserRunResult(
+                    "needs_manual_action",
+                    fill_report,
+                    message=f"{submit_result.message} Confirmation number still requires review.",
+                )
+            return BrowserRunResult("needs_manual_action", fill_report, message=submit_result.message)
+        except PlaywrightTimeoutError as exc:
+            return BrowserRunResult("error", fill_report, message=f"Browser timeout: {exc}")
+        except Exception as exc:
+            return BrowserRunResult("error", fill_report, message=str(exc))
+        finally:
+            context.close()
+
+
 def prefill_profile(page: Any, profile: dict[str, Any], form_strategy: dict[str, Any], *, overwrite: bool) -> FillReport:
     report = FillReport()
     explicit_fields = (form_strategy or {}).get("fields") or {}

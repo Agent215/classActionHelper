@@ -12,6 +12,7 @@ from rich.table import Table
 
 from .cli import (
     cmd_apply,
+    cmd_auto_submit,
     cmd_eligibility,
     cmd_export,
     cmd_import_csv,
@@ -44,7 +45,7 @@ def run_tui() -> int:
             _render_dashboard(settlements)
             choice = Prompt.ask(
                 "Choose",
-                choices=["w", "b", "e", "m", "a", "k", "i", "v", "x", "q"],
+                choices=["w", "b", "e", "m", "a", "s", "k", "i", "v", "x", "q"],
                 default="w",
                 show_choices=False,
             ).lower()
@@ -61,6 +62,8 @@ def run_tui() -> int:
                 _manual_submit()
             elif choice == "a":
                 _apply()
+            elif choice == "s":
+                _auto_submit()
             elif choice == "k":
                 _mark()
             elif choice == "i":
@@ -83,7 +86,7 @@ def _render_dashboard(settlements: list[dict[str, Any]]) -> None:
     due_soon = sum(1 for item in settlements if _days(item) is not None and 0 <= _days(item) <= 14)
     header = f"Settlements: {total} | Actionable: {actionable} | Submitted: {submitted} | Due in 14 days: {due_soon}"
     console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
-    console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | k mark | i import | v validate | x export | q quit"))
+    console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | k mark | i import | v validate | x export | q quit"))
 
     table = Table(title="Next Settlements By Deadline")
     for column in ("ID", "Status", "Deadline", "Days", "Proof", "Notice", "Name"):
@@ -139,6 +142,16 @@ def _apply() -> None:
     console.print("[bold yellow]Apply may attempt final submit only after REVIEWED and exact SUBMIT approval.[/bold yellow]")
     if Confirm.ask("Open apply flow?", default=False):
         cmd_apply(_browser_args(id=settlement_id))
+
+
+def _auto_submit() -> None:
+    console.print("[bold yellow]Auto-submit mode is limited to eligible no-evidence claims and still requires a typed batch approval phrase.[/bold yellow]")
+    if not Confirm.ask("Open auto-submit mode?", default=False):
+        return
+    bulk = Confirm.ask("Bulk auto-submit?", default=True)
+    limit = IntPrompt.ask("Maximum settlements", default=3) if bulk else 1
+    settlement_id = "" if bulk else _ask_id()
+    cmd_auto_submit(_browser_args(id=settlement_id or None, bulk=bulk, limit=limit, mode="manual-submit"))
 
 
 def _mark() -> None:

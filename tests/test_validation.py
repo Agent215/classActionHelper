@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from class_action_helper.eligibility import determine_status_from_answers
-from class_action_helper.cli import _build_work_queue, build_parser
+from class_action_helper.cli import _build_auto_submit_queue, _build_work_queue, build_parser
 from class_action_helper.models import is_expired, validate_settlements
 from class_action_helper.safety import SubmissionGuard
 
@@ -113,3 +113,28 @@ def test_work_queue_sorts_by_deadline_and_skips_blocked():
 def test_parser_includes_tui_command():
     args = build_parser().parse_args(["tui"])
     assert args.func.__name__ == "cmd_tui"
+
+
+def test_auto_submit_queue_only_includes_no_evidence_ready_claims():
+    settlements = [
+        settlement(
+            id="ready",
+            status="eligible",
+            official_url="https://settlement.example.test/claim",
+            requires_proof=False,
+            requires_notice_id=False,
+            requires_login=False,
+        ),
+        settlement(id="proof", status="eligible", requires_proof=True),
+        settlement(id="todo", status="todo"),
+        settlement(id="no-answers", status="eligible", eligibility_answers={}),
+    ]
+    queue = _build_auto_submit_queue(settlements, settlement_id=None, limit=10, allow_expired=False)
+    assert [item["id"] for item in queue] == ["ready"]
+
+
+def test_parser_includes_auto_submit_command():
+    args = build_parser().parse_args(["auto-submit", "--bulk", "--limit", "2"])
+    assert args.func.__name__ == "cmd_auto_submit"
+    assert args.bulk is True
+    assert args.limit == 2

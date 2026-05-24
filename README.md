@@ -61,6 +61,7 @@ claimBot tui
 claimBot list
 claimBot work
 claimBot work --bulk --limit 3
+claimBot auto-submit --bulk --limit 3
 python claim_assistant.py setup
 python claim_assistant.py init-profile
 python claim_assistant.py add
@@ -104,6 +105,23 @@ tracking.
 `claimbot work --mode apply` may attempt final submit, but never as a silent mass
 submit. Each claim still requires `REVIEWED` and exactly `SUBMIT <settlement-id>`
 inside that session.
+
+## Auto Submit No-Evidence Claims
+
+Use `auto-submit` only for claims that are already marked eligible, have saved
+eligibility answers, and require only profile information:
+
+```bash
+claimbot auto-submit --id toms-of-maine-toothpaste
+claimbot auto-submit --bulk --limit 3
+```
+
+The command shows the exact queued claim IDs and requires a typed batch approval
+phrase such as `AUTO SUBMIT id-one id-two`. It automatically skips claims that
+require proof, notice ID, login, configured CAPTCHA/bot checks, missing eligibility
+answers, placeholder URLs, or non-eligible statuses. At runtime it stops each claim
+for manual action if the page shows CAPTCHA, certification text, ambiguous submit
+buttons, or any unresolved requirement.
 
 ## Data Files
 
