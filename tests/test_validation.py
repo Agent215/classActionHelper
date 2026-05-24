@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from class_action_helper.eligibility import determine_status_from_answers
-from class_action_helper.cli import _build_work_queue
+from class_action_helper.cli import _build_work_queue, build_parser
 from class_action_helper.models import is_expired, validate_settlements
 from class_action_helper.safety import SubmissionGuard
 
@@ -108,3 +108,8 @@ def test_work_queue_sorts_by_deadline_and_skips_blocked():
         include_blocked=False,
     )
     assert [item["id"] for item in queue] == ["earlier", "later"]
+
+
+def test_parser_includes_tui_command():
+    args = build_parser().parse_args(["tui"])
+    assert args.func.__name__ == "cmd_tui"

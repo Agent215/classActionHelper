@@ -60,6 +60,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     subcommands.add_parser("init-profile").set_defaults(func=cmd_init_profile)
     subcommands.add_parser("setup").set_defaults(func=cmd_setup)
+    subcommands.add_parser("tui").set_defaults(func=cmd_tui)
     subcommands.add_parser("list").set_defaults(func=cmd_list)
     subcommands.add_parser("add").set_defaults(func=cmd_add)
 
@@ -181,6 +182,12 @@ def cmd_setup(_: argparse.Namespace) -> int:
         _print(f"Imported {imported} new settlements and updated {updated} existing settlements.")
 
     return cmd_validate(argparse.Namespace())
+
+
+def cmd_tui(_: argparse.Namespace) -> int:
+    from .tui import run_tui
+
+    return run_tui()
 
 
 def cmd_list(_: argparse.Namespace) -> int:

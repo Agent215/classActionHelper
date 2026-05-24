@@ -57,6 +57,7 @@ ZELLE_EMAIL_OR_PHONE=
 ```bash
 claimBot --help
 claimBot setup
+claimBot tui
 claimBot list
 claimBot work
 claimBot work --bulk --limit 3
@@ -73,6 +74,9 @@ python claim_assistant.py export
 ```
 
 After installing the local launcher, `claimBot` is equivalent to `python claim_assistant.py` and can be run from any directory.
+
+`claimbot tui` opens a menu-driven terminal UI for dashboard review, queue work,
+eligibility, manual submit, apply, mark, import, validate, and export.
 
 `manual-submit` opens the browser and helps prefill fields, but it never attempts final submission. After you submit manually, it asks for a confirmation number and updates `settlements.yaml`.
 
