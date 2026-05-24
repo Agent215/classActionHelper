@@ -1,9 +1,9 @@
 - id: example-settlement
   name: Example Settlement
   official_url: https://example.com/claim
-  deadline: 2099-12-31
-  class_period_start: 2020-01-01
-  class_period_end: 2021-12-31
+  deadline: '2099-12-31'
+  class_period_start: '2020-01-01'
+  class_period_end: '2021-12-31'
   eligibility_summary: Placeholder only. Replace with the official class definition
     before using.
   requires_notice_id: false
@@ -38,36 +38,40 @@
   updated_at: ''
   history: []
 - id: amazon-prime-ftc-refund
-  name: Amazon Prime FTC refund
+  name: Federal Trade Commission v. Amazon.com Prime refund settlement
   official_url: https://www.subscriptionmembershipsettlement.com/
+  claim_form_url: ''
+  source_url: https://www.subscriptionmembershipsettlement.com/frequently-asked-questions.aspx
+  url_confidence: official FTC page points to official settlement website; FAQ verifies
+    claim window and deadline
+  url_verified_date: '2026-05-24'
   deadline: '2026-07-27'
   class_period_start: ''
   class_period_end: ''
-  eligibility_summary: Possible if you were a U.S. Prime customer affected by challenged
-    Prime enrollment/cancellation flows during the covered period and/or received
-    an FTC/Amazon claim notice.
+  eligibility_summary: U.S. Prime customers who signed up for Prime or tried to cancel
+    between June 23, 2019 and June 23, 2025, met settlement criteria, and did not
+    receive an automatic payment; administrator reviews eligibility.
   requires_notice_id: true
   requires_proof: false
   requires_login: true
   has_captcha_or_bot_check: false
-  expected_benefit: Up to $51 reported
-  status: needs_notice_id
+  expected_benefit: Prime membership fees paid up to $51
+  status: todo
   confirmation_number: ''
   confirmation_file: ''
-  notes: 'category: subscription / consumer refund
+  notes: 'category: subscriptions
 
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    class criteria met
+    geography_relevance: Nationwide U.S.; Pennsylvania residents included if eligible
 
     priority_for_brahm: high
 
-    automation_notes: Search email for FTC/Amazon notice. Do not submit unless notice/eligibility
-    is confirmed.
+    automation_notes: Official FTC and Verita pages; do not provide SSN or Amazon
+    password; claim portal may validate eligibility.
 
-    source_note: From earlier assistant list; verify on official site before filing.
+    source_note: FTC refund page and official settlement website
 
-    url_confidence: official settlement homepage found; claim portal linked from official
-    site
+    url_confidence: official FTC page points to official settlement website; FAQ verifies
+    claim window and deadline
 
     url_verified_date: 2026-05-24'
   eligibility_questions:
@@ -92,590 +96,46 @@
     fields: {}
     checkboxes: {}
     radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
+  created_at: '2026-05-24T21:30:35+00:00'
+  updated_at: '2026-05-24T21:30:35+00:00'
   history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://veritaconnect.com/subscriptionmembershipsettlement
-  source_url: https://www.subscriptionmembershipsettlement.com/
-  url_confidence: official settlement homepage found; claim portal linked from official
-    site
-  url_verified_date: '2026-05-24'
-- id: google-android-cellular-data
-  name: Google Android cellular-data settlement
-  official_url: https://www.federalcellularclassaction.com/
-  deadline: '2026-06-23'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you used an Android mobile device with cellular
-    data during the covered period; California users reportedly excluded.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Up to $100 reported
-  status: needs_review
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: privacy / mobile data
-
-    geography_relevance: Nationwide except exclusions; Pennsylvania residents potentially
-    eligible
-
-    priority_for_brahm: high
-
-    automation_notes: Find official settlement site before adding real URL. This may
-    not use a standard claim form.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; payment-election page found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.federalcellularclassaction.com/payment-election
-  source_url: https://www.federalcellularclassaction.com/
-  url_confidence: official settlement homepage found; payment-election page found
-  url_verified_date: '2026-05-24'
-- id: google-assistant-privacy
-  name: Google Assistant privacy settlement
-  official_url: https://www.googleassistantprivacylitigation.com/
-  deadline: '2026-08-27'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you bought a Google-made Assistant device or had
-    communications recorded by Google Assistant after a false accept during the covered
-    period.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Share of $68 million fund reported
-  status: needs_review
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: privacy / voice assistant
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible
-
-    priority_for_brahm: high
-
-    automation_notes: Find official settlement site before applying. Review device/account
-    eligibility carefully.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and claim page found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.googleassistantprivacylitigation.com/file
-  source_url: https://www.googleassistantprivacylitigation.com/
-  url_confidence: official settlement homepage and claim page found
-  url_verified_date: '2026-05-24'
-- id: toms-of-maine-toothpaste
-  name: Tom's of Maine toothpaste settlement
-  official_url: https://www.toothpastesettlement.com/
-  deadline: '2026-07-06'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you bought covered Tom's of Maine toothpaste between
-    Nov. 21, 2020 and Mar. 6, 2026.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: false
-  has_captcha_or_bot_check: false
-  expected_benefit: No-proof reimbursement for one product at average retail price
-    reported
-  status: todo
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: consumer product
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible
-
-    priority_for_brahm: high
-
-    automation_notes: Good candidate for manual-submit or approved apply flow if you
-    actually bought covered product.
-
-    source_note: From earlier assistant list; verify on official site before filing.
-
-    url_confidence: official settlement homepage and claim-login page found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.toothpastesettlement.com/Login
-  source_url: https://www.toothpastesettlement.com/
-  url_confidence: official settlement homepage and claim-login page found
-  url_verified_date: '2026-05-24'
-- id: team-group-t-force-dram
-  name: Team Group / T-Force DRAM settlement
-  official_url: https://www.teamgroupdramsettlement.com/
-  deadline: '2026-07-07'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you bought Team Group DDR3, DDR4, or DDR5 memory
-    in the U.S. between May 3, 2020 and Apr. 8, 2026.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: false
-  has_captcha_or_bot_check: false
-  expected_benefit: Cash claim for up to five products per household without proof
-    reported
-  status: todo
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: computer hardware / consumer product
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible
-
-    priority_for_brahm: medium
-
-    automation_notes: Find official settlement site before applying. Check whether
-    you bought Team Group/T-Force RAM.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and submit-claim page found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.teamgroupdramsettlement.com/submit-claim
-  source_url: https://www.teamgroupdramsettlement.com/
-  url_confidence: official settlement homepage and submit-claim page found
-  url_verified_date: '2026-05-24'
-- id: trader-joes-facta-receipt
-  name: Trader Joe's receipt privacy / FACTA settlement
-  official_url: https://www.tj-factasettlement.com/
-  deadline: '2026-06-09'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you used a credit or debit card at a Trader Joe's
-    store between Mar. 5 and Jul. 19, 2019.
-  requires_notice_id: true
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Estimated around $102.45 reported
-  status: todo
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: receipt privacy / FACTA
-
-    geography_relevance: Nationwide/store-specific; Pennsylvania residents potentially
-    eligible if they shopped during the period
-
-    priority_for_brahm: high
-
-    automation_notes: Short deadline. Search email/mail for notice. Only file if you
-    used card at Trader Joe''s in covered period.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; claim portal linked from official
-    site
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://veritaconnect.com/tj-factasettlement
-  source_url: https://www.tj-factasettlement.com/
-  url_confidence: official settlement homepage found; claim portal linked from official
-    site
-  url_verified_date: '2026-05-24'
-- id: fanatics-handling-fee
-  name: Fanatics handling-fee settlement
-  official_url: https://handlingfeesettlement.com/
-  deadline: '2026-08-27'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you bought merchandise through Fanatics websites
-    and paid a handling fee between May 6, 2018 and Mar. 30, 2026.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Two $5 vouchers reported
-  status: todo
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: ecommerce fees
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible
-
-    priority_for_brahm: medium
-
-    automation_notes: Search email for Fanatics orders/notice. Benefit is voucher-based.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and claim-form page found; claim
-    form is hosted via Formstack
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://handlingfeesettlement.com/claim-form/
-  source_url: https://handlingfeesettlement.com/
-  url_confidence: official settlement homepage and claim-form page found; claim form
-    is hosted via Formstack
-  url_verified_date: '2026-05-24'
-- id: european-wax-center-web-privacy
-  name: European Wax Center web privacy settlement
-  official_url: https://ewcdigitalsettlement.com/
-  deadline: '2026-06-30'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you visited waxcenter.com and/or booked an appointment
-    online between June 30, 2023 and Apr. 2, 2026.
-  requires_notice_id: false
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Up to $10 reported
-  status: todo
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: web privacy / tracking
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible
-
-    priority_for_brahm: low
-
-    automation_notes: Only worth doing if you plausibly used the site/booked online.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/cumor_v_europeanwaxcenter_claimform/new?form-version=1
-  source_url: https://ewcdigitalsettlement.com/
-  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
-  url_verified_date: '2026-05-24'
-- id: psea-data-breach
-  name: PSEA data breach settlement
-  official_url: https://www.pseadatasettlement.com/
-  deadline: '2026-07-06'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you received notice that your information was involved
-    in the Pennsylvania State Education Association breach.
-  requires_notice_id: true
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: $50 alternative cash payment reported, plus documented loss options
-  status: needs_notice_id
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: data breach
-
-    geography_relevance: Pennsylvania-specific
-
-    priority_for_brahm: medium
-
-    automation_notes: Search email/mail for PSEA notice. Likely not applicable unless
-    you received notice.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and filing-instructions page found;
-    external portal requires class member ID/PIN
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.pseadatasettlement.com/claims_filing.html
-  source_url: https://www.pseadatasettlement.com/
-  url_confidence: official settlement homepage and filing-instructions page found;
-    external portal requires class member ID/PIN
-  url_verified_date: '2026-05-24'
-- id: sportsmans-warehouse-pa-privacy
-  name: Sportsman's Warehouse Pennsylvania privacy settlement
+  - at: '2026-05-24T21:30:35+00:00'
+    message: Imported from candidate-settlements.csv.
+- id: sportsmans-warehouse-ufa-pa
+  name: Petris v. Sportsmans Warehouse UFA settlement
   official_url: https://swufasettlement.com/
+  claim_form_url: https://swufasettlement.com/form/claim
+  source_url: https://swufasettlement.com/
+  url_confidence: official settlement homepage found; claim form linked from official
+    site
+  url_verified_date: '2026-05-24'
   deadline: '2026-06-19'
   class_period_start: ''
   class_period_end: ''
-  eligibility_summary: Possible if you made a covered online reservation/order from
-    Sportsman's Warehouse in Pennsylvania.
-  requires_notice_id: false
+  eligibility_summary: Pennsylvania residents who ordered and reserved a firearm online
+    from Sportsman's Warehouse for purchase to be completed in-store from January
+    1, 2020 through March 13, 2024.
+  requires_notice_id: true
   requires_proof: true
   requires_login: true
   has_captcha_or_bot_check: false
-  expected_benefit: Up to about $107 reported
-  status: todo
+  expected_benefit: Up to $107
+  status: needs_notice_id
   confirmation_number: ''
   confirmation_file: ''
-  notes: 'category: Pennsylvania web/order privacy
+  notes: 'category: privacy
 
     geography_relevance: Pennsylvania-specific
 
-    priority_for_brahm: medium
+    priority_for_brahm: high
 
-    automation_notes: Check if you have Sportsman''s Warehouse order/reservation history
-    in PA.
+    automation_notes: Requires notice Unique ID and PIN; manual review recommended
+    because eligibility is narrow and sensitive.
 
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
+    source_note: official settlement administrator homepage
 
-    url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_proof
-    question: Do you have the proof or records required by the official claim form?
-    type: yes_no
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://swufasettlement.com/form/claim/
-  source_url: https://swufasettlement.com/
-  url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
-  url_verified_date: '2026-05-24'
-- id: drexel-covid-tuition
-  name: Drexel University COVID tuition settlement
-  official_url: https://www.drexelcovidsettlement.com/
-  deadline: '2026-06-25'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible only if you were a Drexel student who paid tuition
-    or fees for Spring 2020.
-  requires_notice_id: true
-  requires_proof: true
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Automatic equal-share payment reported
-  status: needs_review
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: tuition / university fees
-
-    geography_relevance: Philadelphia/Pennsylvania-specific
-
-    priority_for_brahm: low
-
-    automation_notes: Likely only relevant if you attended Drexel in Spring 2020.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; election form is linked from
-    official site and appears to require class member code/PIN
+    url_confidence: official settlement homepage found; claim form linked from official
+    site
 
     url_verified_date: 2026-05-24'
   eligibility_questions:
@@ -703,380 +163,47 @@
     fields: {}
     checkboxes: {}
     radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
+  created_at: '2026-05-24T21:30:35+00:00'
+  updated_at: '2026-05-24T21:30:35+00:00'
   history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://www.claimsettlementportal.com/surveys/election/home.aspx
-  source_url: https://www.drexelcovidsettlement.com/
-  url_confidence: official settlement homepage found; election form is linked from
-    official site and appears to require class member code/PIN
-  url_verified_date: '2026-05-24'
-- id: comcast-xfinity-data-breach
-  name: Comcast / Xfinity data breach settlement
-  official_url: https://www.comcastbreachsettlement.com/
-  deadline: '2026-09-14'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you got a notice that your information may have
-    been compromised in the Xfinity incident.
-  requires_notice_id: true
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Alternative cash option around $50 reported
-  status: needs_notice_id
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: data breach
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    noticed
-
-    priority_for_brahm: medium
-
-    automation_notes: Search email/mail for Xfinity/Comcast notice before attempting.
-
-    source_note: From earlier assistant list; verify on official site before filing.
-
-    url_confidence: official settlement homepage and Kroll/KSACMS claim form found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/comcastbreachsettlement_claimform/new?form-version=1
-  source_url: https://www.comcastbreachsettlement.com/
-  url_confidence: official settlement homepage and Kroll/KSACMS claim form found
-  url_verified_date: '2026-05-24'
-- id: krispy-kreme-data-breach
-  name: Krispy Kreme data breach settlement
-  official_url: https://krispykremedatasettlement.com/
-  deadline: '2026-06-22'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you received a settlement notice related to the
-    Krispy Kreme data breach.
-  requires_notice_id: true
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: $75 no-proof cash option reported
-  status: needs_notice_id
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: data breach
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    noticed
-
-    priority_for_brahm: medium
-
-    automation_notes: Search email/mail for Krispy Kreme settlement notice.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and claim-login page found
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://krispykremedatasettlement.com/Login
-  source_url: https://krispykremedatasettlement.com/
-  url_confidence: official settlement homepage and claim-login page found
-  url_verified_date: '2026-05-24'
-- id: circle-k-data-breach
-  name: Circle K data breach settlement
-  official_url: https://gasexpressdatasettlement.com/
-  deadline: '2026-09-03'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you received notice from Circle K related to the
-    breach.
-  requires_notice_id: true
-  requires_proof: false
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: $50 alternative cash option for first 700 valid claims reported
-  status: needs_notice_id
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: data breach
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    noticed
-
-    priority_for_brahm: low
-
-    automation_notes: Only attempt if you received notice; limited alternative-cash
-    pool noted.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://gasexpressdatasettlement.com/form/claim/
-  source_url: https://gasexpressdatasettlement.com/
-  url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
-  url_verified_date: '2026-05-24'
-- id: register-com-robocalls
-  name: Register.com robocall settlement
-  official_url: https://www.registertcpasettlement.com/
-  deadline: '2026-06-15'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if your number received a covered prerecorded/artificial
-    voice call from Register.com after being disconnected/reassigned.
-  requires_notice_id: true
-  requires_proof: true
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: Potentially high but depends on validation and claim count
-  status: needs_review
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: TCPA / robocall
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    phone number matches
-
-    priority_for_brahm: medium
-
-    automation_notes: Likely needs phone number validation. Do not submit unless number
-    matches covered records.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: has_proof
-    question: Do you have the proof or records required by the official claim form?
-    type: yes_no
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/registerTCPAsettlement_claimform/new?form-version=1
-  source_url: https://www.registertcpasettlement.com/
-  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+  - at: '2026-05-24T21:30:35+00:00'
+    message: Imported from candidate-settlements.csv.
+- id: psea-data-settlement
+  name: Hudson v. Pennsylvania State Education Association data settlement
+  official_url: https://www.pseadatasettlement.com/
+  claim_form_url: https://www.claimsettlementportal.com/
+  source_url: https://www.pseadatasettlement.com/
+  url_confidence: official settlement homepage found; external claim portal linked
     from official site
   url_verified_date: '2026-05-24'
-- id: motive-technologies-robocall
-  name: Motive Technologies robocall settlement
-  official_url: https://dashcamcallingsettlement.com/
   deadline: '2026-07-06'
   class_period_start: ''
   class_period_end: ''
-  eligibility_summary: Possible if you received covered prerecorded/artificial voice
-    calls from Motive.
+  eligibility_summary: Natural persons in the U.S. whose private information was potentially
+    compromised in the PSEA data incident announced March 18, 2025, including people
+    sent notice by PSEA.
   requires_notice_id: true
   requires_proof: true
   requires_login: true
   has_captcha_or_bot_check: false
-  expected_benefit: $50 voucher reported
-  status: needs_review
+  expected_benefit: Up to $5,000 documented losses, $50 alternative cash payment,
+    and two years credit monitoring
+  status: needs_notice_id
   confirmation_number: ''
   confirmation_file: ''
-  notes: 'category: TCPA / robocall
+  notes: 'category: data breach
 
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    phone number matches
-
-    priority_for_brahm: low
-
-    automation_notes: Likely needs phone number validation. Benefit reported as voucher.
-
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
-
-    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
-
-    url_verified_date: 2026-05-24'
-  eligibility_questions:
-  - id: personally_matches_class
-    question: Based on the official settlement notice, do you personally match the
-      class definition?
-    type: yes_no
-  - id: eligibility_notes
-    question: Record the facts you verified locally, without guessing.
-    type: text
-  - id: has_notice_id
-    question: Did you receive a notice ID or claim ID?
-    type: yes_no
-  - id: notice_id
-    question: Enter notice ID if available.
-    type: secret_or_text
-  - id: has_proof
-    question: Do you have the proof or records required by the official claim form?
-    type: yes_no
-  - id: login_completed
-    question: Have you completed any required account, notice, phone, or email validation?
-    type: yes_no
-  eligibility_answers: {}
-  form_strategy:
-    fields: {}
-    checkboxes: {}
-    radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
-  history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/dashcamcallingsettlement_claimform/new?form-version=1
-  source_url: https://dashcamcallingsettlement.com/
-  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
-  url_verified_date: '2026-05-24'
-- id: hy-cite-enterprises-tcpa
-  name: Hy Cite Enterprises TCPA settlement
-  official_url: https://hycitetcpasettlement.com/
-  deadline: '2026-07-08'
-  class_period_start: ''
-  class_period_end: ''
-  eligibility_summary: Possible if you received covered calls from Hy Cite.
-  requires_notice_id: true
-  requires_proof: true
-  requires_login: true
-  has_captcha_or_bot_check: false
-  expected_benefit: $600-$1,000 estimated reported
-  status: needs_review
-  confirmation_number: ''
-  confirmation_file: ''
-  notes: 'category: TCPA / robocall
-
-    geography_relevance: Nationwide; Pennsylvania residents potentially eligible if
-    phone number matches
+    geography_relevance: Pennsylvania-centered data breach; nationwide class includes
+    eligible U.S. persons
 
     priority_for_brahm: medium
 
-    automation_notes: Potentially high value but likely requires phone match/notice.
-    Do not guess eligibility.
+    automation_notes: Notice/Class Member ID and PIN required for online filing; documentation
+    needed for loss claims.
 
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
+    source_note: official settlement administrator homepage
 
-    url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
+    url_confidence: official settlement homepage found; external claim portal linked
     from official site
 
     url_verified_date: 2026-05-24'
@@ -1105,47 +232,105 @@
     fields: {}
     checkboxes: {}
     radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
+  created_at: '2026-05-24T21:30:35+00:00'
+  updated_at: '2026-05-24T21:30:35+00:00'
   history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/HyCiteTCPAsettlement_claimform/new?form-version=1
-  source_url: https://hycitetcpasettlement.com/
-  url_confidence: official settlement homepage found; Kroll/KSACMS claim form linked
-    from official site
+  - at: '2026-05-24T21:30:35+00:00'
+    message: Imported from candidate-settlements.csv.
+- id: toms-of-maine-toothpaste
+  name: Rabinowitz v. Colgate Palmolive Tom's of Maine toothpaste settlement
+  official_url: https://www.toothpastesettlement.com/
+  claim_form_url: https://www.toothpastesettlement.com/Login
+  source_url: https://www.toothpastesettlement.com/Login
+  url_confidence: official settlement homepage found; claim instructions linked from
+    official site
   url_verified_date: '2026-05-24'
-- id: southern-illinois-healthcare-myChart
-  name: Southern Illinois Healthcare MyChart privacy settlement
-  official_url: https://southernillinoishealthpixelsettlement.com/
+  deadline: '2026-07-06'
+  class_period_start: ''
+  class_period_end: ''
+  eligibility_summary: U.S. purchasers who bought one or more Tom's of Maine toothpaste
+    products for use and not resale between November 21, 2020 and March 6, 2026.
+  requires_notice_id: false
+  requires_proof: true
+  requires_login: false
+  has_captcha_or_bot_check: false
+  expected_benefit: Average MSRP for up to one product without proof, or documented
+    refund for up to three products, subject to proration
+  status: todo
+  confirmation_number: ''
+  confirmation_file: ''
+  notes: 'category: consumer products
+
+    geography_relevance: Nationwide U.S.; Pennsylvania residents included if eligible
+
+    priority_for_brahm: medium
+
+    automation_notes: One claim per household; proof increases potential benefit;
+    final approval still pending.
+
+    source_note: official Epiq settlement website
+
+    url_confidence: official settlement homepage found; claim instructions linked
+    from official site
+
+    url_verified_date: 2026-05-24'
+  eligibility_questions:
+  - id: personally_matches_class
+    question: Based on the official settlement notice, do you personally match the
+      class definition?
+    type: yes_no
+  - id: eligibility_notes
+    question: Record the facts you verified locally, without guessing.
+    type: text
+  - id: has_proof
+    question: Do you have the proof or records required by the official claim form?
+    type: yes_no
+  eligibility_answers: {}
+  form_strategy:
+    fields: {}
+    checkboxes: {}
+    radios: {}
+  created_at: '2026-05-24T21:30:35+00:00'
+  updated_at: '2026-05-24T21:30:35+00:00'
+  history:
+  - at: '2026-05-24T21:30:35+00:00'
+    message: Imported from candidate-settlements.csv.
+- id: register-com-tcpa
+  name: Lewis v. Register.com TCPA settlement
+  official_url: https://www.registertcpasettlement.com/
+  claim_form_url: https://forms.ksacms.com/efiling/fr/eform/registerTCPAsettlement_claimform/new?form-version=1
+  source_url: https://www.registertcpasettlement.com/
+  url_confidence: official settlement homepage found; claim form linked from official
+    site
+  url_verified_date: '2026-05-24'
   deadline: '2026-06-15'
   class_period_start: ''
   class_period_end: ''
-  eligibility_summary: Possible if you were an SIH patient and used MyChart/open scheduling/health-risk
-    assessment during covered windows.
+  eligibility_summary: People whose cellular telephone number received an artificial
+    or prerecorded voice call from Register.com from February 12, 2021 through November
+    24, 2025 after the number was disconnected and reassigned per the FCC Reassigned
+    Numbers Database.
   requires_notice_id: true
-  requires_proof: false
+  requires_proof: true
   requires_login: true
   has_captcha_or_bot_check: false
-  expected_benefit: $17.50 reported
+  expected_benefit: Pro rata share of $1.5 million fund after deductions
   status: needs_review
   confirmation_number: ''
   confirmation_file: ''
-  notes: 'category: healthcare web privacy
+  notes: 'category: TCPA/robocalls
 
-    geography_relevance: Mostly Illinois-specific; unlikely unless you used SIH
+    geography_relevance: Nationwide U.S.; Pennsylvania residents included if eligible
 
-    priority_for_brahm: low
+    priority_for_brahm: medium
 
-    automation_notes: Probably skip unless you were an SIH patient.
+    automation_notes: Short deadline; Claim ID required on online form, or proof needed
+    to request a form from administrator.
 
-    source_note: From earlier assistant list; verify current official settlement site
-    before filing.
+    source_note: official Kroll settlement website and claim form
 
-    url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
+    url_confidence: official settlement homepage found; claim form linked from official
+    site
 
     url_verified_date: 2026-05-24'
   eligibility_questions:
@@ -1162,6 +347,9 @@
   - id: notice_id
     question: Enter notice ID if available.
     type: secret_or_text
+  - id: has_proof
+    question: Do you have the proof or records required by the official claim form?
+    type: yes_no
   - id: login_completed
     question: Have you completed any required account, notice, phone, or email validation?
     type: yes_no
@@ -1170,15 +358,8 @@
     fields: {}
     checkboxes: {}
     radios: {}
-  created_at: '2026-05-24T20:11:18+00:00'
-  updated_at: '2026-05-24T20:31:38+00:00'
+  created_at: '2026-05-24T21:30:35+00:00'
+  updated_at: '2026-05-24T21:30:35+00:00'
   history:
-  - at: '2026-05-24T20:11:18+00:00'
-    message: Imported from possible_class_action_settlements_tracker.csv.
-  - at: '2026-05-24T20:31:38+00:00'
-    message: Updated from possible_class_action_settlements_tracker_with_urls.csv.
-  claim_form_url: https://southernillinoishealthpixelsettlement.com/form/claim
-  source_url: https://southernillinoishealthpixelsettlement.com/
-  url_confidence: official settlement homepage and claim-login page found; requires
-    Unique ID/PIN from notice
-  url_verified_date: '2026-05-24'
+  - at: '2026-05-24T21:30:35+00:00'
+    message: Imported from candidate-settlements.csv.

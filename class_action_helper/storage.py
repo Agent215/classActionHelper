@@ -20,6 +20,7 @@ ENV_PATH = ROOT / ".env"
 SCREENSHOTS_DIR = ROOT / "screenshots"
 CONFIRMATIONS_DIR = ROOT / "confirmations"
 BROWSER_PROFILE_DIR = ROOT / "browser-profile"
+BACKUPS_DIR = ROOT / "backups"
 
 ENV_PROFILE_MAP = {
     "first_name": "FIRST_NAME",
@@ -43,6 +44,57 @@ def ensure_local_dirs() -> None:
     SCREENSHOTS_DIR.mkdir(exist_ok=True)
     CONFIRMATIONS_DIR.mkdir(exist_ok=True)
     BROWSER_PROFILE_DIR.mkdir(exist_ok=True)
+    BACKUPS_DIR.mkdir(exist_ok=True)
+
+
+def placeholder_settlements() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "example-settlement",
+            "name": "Example Settlement",
+            "official_url": "https://example.com/claim",
+            "deadline": "2099-12-31",
+            "class_period_start": "2020-01-01",
+            "class_period_end": "2021-12-31",
+            "eligibility_summary": "Placeholder only. Replace with the official class definition before using.",
+            "requires_notice_id": False,
+            "requires_proof": False,
+            "requires_login": False,
+            "has_captcha_or_bot_check": False,
+            "expected_benefit": "Unknown",
+            "status": "todo",
+            "confirmation_number": "",
+            "confirmation_file": "",
+            "notes": "Placeholder example, not a real settlement.",
+            "eligibility_questions": [
+                {
+                    "id": "purchased_product",
+                    "question": "Did you personally buy the covered product during the class period?",
+                    "type": "yes_no",
+                },
+                {
+                    "id": "purchase_state",
+                    "question": "Was the purchase made while you lived in or ordered from an eligible state?",
+                    "type": "text",
+                },
+                {
+                    "id": "has_notice_id",
+                    "question": "Did you receive a notice ID or claim ID?",
+                    "type": "yes_no",
+                },
+                {
+                    "id": "notice_id",
+                    "question": "Enter notice ID if available.",
+                    "type": "secret_or_text",
+                },
+            ],
+            "eligibility_answers": {},
+            "form_strategy": {"fields": {}, "checkboxes": {}, "radios": {}},
+            "created_at": "",
+            "updated_at": "",
+            "history": [],
+        }
+    ]
 
 
 def load_settlements(path: Path = SETTLEMENTS_PATH) -> list[dict[str, Any]]:
@@ -60,6 +112,19 @@ def load_settlements(path: Path = SETTLEMENTS_PATH) -> list[dict[str, Any]]:
 def save_settlements(settlements: list[dict[str, Any]], path: Path = SETTLEMENTS_PATH) -> None:
     with path.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(settlements, handle, sort_keys=False, allow_unicode=False)
+
+
+def backup_settlements(path: Path = SETTLEMENTS_PATH) -> Path:
+    from datetime import datetime
+
+    ensure_local_dirs()
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    backup_path = BACKUPS_DIR / f"settlements-{timestamp}.yaml"
+    if path.exists():
+        shutil.copyfile(path, backup_path)
+    else:
+        backup_path.write_text("[]\n", encoding="utf-8")
+    return backup_path
 
 
 def find_settlement(settlements: list[dict[str, Any]], settlement_id: str) -> dict[str, Any] | None:

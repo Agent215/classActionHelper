@@ -21,6 +21,8 @@ from .cli import (
     cmd_import_csv,
     cmd_manual_submit,
     cmd_mark,
+    cmd_research,
+    cmd_unseed,
     cmd_validate,
     cmd_work,
 )
@@ -39,6 +41,38 @@ _________ .__         .__       __________        __
         \/          \/         \/       \/
 """.strip("\n")
 
+CLAIMBOT_ART = r"""
+                                      ∞×××××××××××××××××××××÷
+                                      ××            ×××   ×××
+                                       π××              ×××
+                                         ×××           ××
+                                           ×× ≠×××××××××
+                                            ×××××××××××
+                                            ××∞      ××
+                                           ×××××××××××××
+                                        =××            =×××
+                                      ×××                 ×××
+                                     ××        ××××        ×××
+                                   ××≠        ≈×× ××××       ×××
+                                 ∞××       ×××        ××∞     ×××
+                                ××≠       ××π××× ≠×××  ××       ××π
+                               ××         × ×× × ×× ××  ××       ×××
+                              ××          ×× ×××π××  =××          ×××
+                             ××            ×××   ∞××               ×××
+                            ××               ××××   ×××             ×××
+                           ××                  ×× ×××∞ ××            ××
+                           ××             ×××× ×× ×  ××××            ×××
+                           ××             ×∞×× ×× ×  ××≠×             ××
+                           ××             ∞×∞≠××× ××× ×××             ××
+                           ××               ××××  ×××××               ××
+                            ××                 ×= ×∞                 ×××
+                             ××                 ×××                 ≠××
+                              ×××                                  ×××
+                                ××××                             ××××
+                                   ××××××≈                   ≠×××××
+                                       =×××××××××××××××××××××××
+""".strip("\n")
+
 
 def run_tui() -> int:
     ensure_local_dirs()
@@ -50,7 +84,7 @@ def run_tui() -> int:
             first_render = False
             choice = Prompt.ask(
                 "Choose",
-                choices=["w", "b", "e", "m", "a", "s", "k", "i", "v", "x", "q"],
+                choices=["w", "b", "e", "m", "a", "s", "r", "u", "k", "i", "v", "x", "q"],
                 default="w",
                 show_choices=False,
             ).lower()
@@ -69,6 +103,10 @@ def run_tui() -> int:
                 _apply()
             elif choice == "s":
                 _auto_submit()
+            elif choice == "r":
+                _research()
+            elif choice == "u":
+                _unseed()
             elif choice == "k":
                 _mark()
             elif choice == "i":
@@ -91,9 +129,10 @@ def _render_dashboard(settlements: list[dict[str, Any]], *, animate: bool = Fals
     due_soon = sum(1 for item in settlements if _days(item) is not None and 0 <= _days(item) <= 14)
     header = f"Settlements: {total} | Actionable: {actionable} | Submitted: {submitted} | Due in 14 days: {due_soon}"
     console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
+    console.print(f"[green]{CLAIMBOT_ART}[/green]")
     if animate:
         time.sleep(0.25)
-    console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | k mark | i import | v validate | x export | q quit"))
+    console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | r research | u unseed | k mark | i import | v validate | x export | q quit"))
     if animate:
         time.sleep(0.15)
 
@@ -177,6 +216,37 @@ def _auto_submit() -> None:
     limit = IntPrompt.ask("Maximum settlements", default=3) if bulk else 1
     settlement_id = "" if bulk else _ask_id()
     cmd_auto_submit(_browser_args(id=settlement_id or None, bulk=bulk, limit=limit, mode="manual-submit"))
+
+
+def _research() -> None:
+    console.print("[bold yellow]Research creates candidate rows only. Review sources before applying.[/bold yellow]")
+    output = Prompt.ask("Candidate CSV output", default="candidate-settlements.csv")
+    geography = Prompt.ask("Geography", default="Pennsylvania and nationwide U.S.")
+    categories = Prompt.ask(
+        "Categories",
+        default="consumer products, privacy, data breach, subscriptions, ecommerce fees, TCPA/robocalls",
+    )
+    limit = IntPrompt.ask("Maximum candidates", default=25)
+    run = Confirm.ask("Run Codex now with web search?", default=False)
+    import_after = Confirm.ask("Import CSV after successful run?", default=False) if run else False
+    cmd_research(
+        argparse.Namespace(
+            provider="codex",
+            output=output,
+            geography=geography,
+            categories=categories,
+            days_ahead=180,
+            limit=limit,
+            run=run,
+            import_after=import_after,
+        )
+    )
+
+
+def _unseed() -> None:
+    console.print("[bold yellow]This backs up settlements.yaml, then resets it to the placeholder seed.[/bold yellow]")
+    if Confirm.ask("Unseed current settlement data?", default=False):
+        cmd_unseed(argparse.Namespace(yes=True))
 
 
 def _mark() -> None:

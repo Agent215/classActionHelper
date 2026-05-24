@@ -29,10 +29,12 @@ from .models import (
     validate_settlements,
     validate_url,
 )
+from .research import DEFAULT_CANDIDATE_CSV, build_research_command, write_research_prompt, run_research_command
 from .storage import (
     ENV_PATH,
     PROFILE_PATH,
     SETTLEMENTS_PATH,
+    backup_settlements,
     ensure_local_dirs,
     export_csv,
     find_settlement,
@@ -40,6 +42,7 @@ from .storage import (
     load_env_profile,
     load_profile,
     load_settlements,
+    placeholder_settlements,
     save_env_profile,
     save_settlements,
 )
@@ -72,11 +75,29 @@ def build_parser() -> argparse.ArgumentParser:
     import_csv.add_argument("path")
     import_csv.set_defaults(func=cmd_import_csv)
 
+    research = subcommands.add_parser("research")
+    research.add_argument("--provider", default="codex", choices=["codex"])
+    research.add_argument("--output", default=str(DEFAULT_CANDIDATE_CSV))
+    research.add_argument("--geography", default="Pennsylvania and nationwide U.S.")
+    research.add_argument(
+        "--categories",
+        default="consumer products, privacy, data breach, subscriptions, ecommerce fees, TCPA/robocalls, Pennsylvania-specific settlements",
+    )
+    research.add_argument("--days-ahead", type=int, default=180)
+    research.add_argument("--limit", type=int, default=25)
+    research.add_argument("--run", action="store_true", help="Run the provider CLI after writing the prompt.")
+    research.add_argument("--import-after", action="store_true", help="Import the output CSV after a successful provider run.")
+    research.set_defaults(func=cmd_research)
+
     edit = subcommands.add_parser("edit")
     edit.add_argument("--id", required=True)
     edit.set_defaults(func=cmd_edit)
 
     subcommands.add_parser("validate").set_defaults(func=cmd_validate)
+
+    unseed = subcommands.add_parser("unseed")
+    unseed.add_argument("--yes", action="store_true", help="Confirm resetting settlements.yaml to the placeholder seed.")
+    unseed.set_defaults(func=cmd_unseed)
 
     eligibility = subcommands.add_parser("eligibility")
     eligibility.add_argument("--id", required=True)
@@ -282,6 +303,45 @@ def cmd_import_csv(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_research(args: argparse.Namespace) -> int:
+    output_path = Path(args.output).expanduser()
+    if not output_path.is_absolute():
+        output_path = Path.cwd() / output_path
+    prompt_path = write_research_prompt(
+        output_path=output_path,
+        geography=args.geography,
+        categories=args.categories,
+        days_ahead=args.days_ahead,
+        limit=args.limit,
+    )
+    command = build_research_command(args.provider, prompt_path, output_path)
+
+    _print(f"Wrote research prompt: {prompt_path}")
+    _print(f"Candidate CSV target: {output_path}")
+    _print("Provider command:")
+    _print(f"codex --search exec --sandbox workspace-write --cd {_shell_quote(str(SETTLEMENTS_PATH.parent))} \"$(cat {_shell_quote(str(prompt_path))})\"")
+
+    if not args.run:
+        _print("Run again with --run to execute Codex, or inspect/edit the prompt first.")
+        return 0
+
+    code = run_research_command(command)
+    if code != 0:
+        _print(f"Research provider exited with code {code}.")
+        return code
+
+    if args.import_after:
+        if not output_path.exists():
+            _print(f"Expected output CSV was not created: {output_path}")
+            return 1
+        imported, updated = import_csv_file(output_path)
+        _print(f"Imported {imported} new settlements and updated {updated} existing settlements.")
+        return cmd_validate(argparse.Namespace())
+
+    _print(f"Research complete. Review the CSV, then import it with: claimbot import-csv {output_path}")
+    return 0
+
+
 def import_csv_file(source: Path) -> tuple[int, int]:
     if not source.exists():
         raise FileNotFoundError(source)
@@ -419,6 +479,19 @@ def cmd_validate(_: argparse.Namespace) -> int:
         _print(f"Error: {error}")
     _print("Validation passed." if report.ok else "Validation failed.")
     return 0 if report.ok else 1
+
+
+def cmd_unseed(args: argparse.Namespace) -> int:
+    if not args.yes:
+        typed = input("This backs up settlements.yaml and resets it to the placeholder seed. Type UNSEED to continue: ").strip()
+        if typed != "UNSEED":
+            _print("Unseed cancelled.")
+            return 1
+    backup_path = backup_settlements()
+    save_settlements(placeholder_settlements())
+    _print(f"Backed up current settlements to {backup_path}.")
+    _print("Reset settlements.yaml to the placeholder seed.")
+    return cmd_validate(argparse.Namespace())
 
 
 def cmd_eligibility(args: argparse.Namespace) -> int:
@@ -786,6 +859,14 @@ def _print(message: str) -> None:
         console.print(message)
     else:
         print(message)
+
+
+def _shell_quote(value: str) -> str:
+    if not value:
+        return "''"
+    if all(char.isalnum() or char in "/._-=:" for char in value):
+        return value
+    return "'" + value.replace("'", "'\"'\"'") + "'"
 
 
 def _status_from_hint(value: str) -> str:

@@ -25,13 +25,18 @@ install -m 755 scripts/git ~/.local/bin/git
 
 ## Private Profile
 
-Create your ignored local profile:
+Run first-time setup:
 
 ```bash
-python claim_assistant.py init-profile
+claimbot setup
 ```
 
-This copies `.env.example` to `.env`. Fill in only your real personal information in `.env`; it is ignored by git.
+This prompts for your private profile values and saves them in `.env`, which is
+ignored by git. You can also create the file without prompts:
+
+```bash
+claimbot init-profile
+```
 
 Supported fields:
 
@@ -55,33 +60,27 @@ ZELLE_EMAIL_OR_PHONE=
 ## Common Commands
 
 ```bash
-claimBot
-claimBot --help
-claimBot setup
-claimBot tui
-claimBot list
-claimBot work
-claimBot work --bulk --limit 3
-claimBot auto-submit --bulk --limit 3
-python claim_assistant.py setup
-python claim_assistant.py init-profile
-python claim_assistant.py add
-python claim_assistant.py import-csv /path/to/possible_class_action_settlements_tracker.csv
-python claim_assistant.py validate
-python claim_assistant.py list
-python claim_assistant.py eligibility --id example-settlement
-python claim_assistant.py apply --id example-settlement
-python claim_assistant.py manual-submit --id example-settlement
-python claim_assistant.py export
+claimbot
+claimbot --help
+claimbot setup
+claimbot list
+claimbot work
+claimbot work --bulk --limit 3
+claimbot auto-submit --bulk --limit 3
+claimbot research --provider codex --output candidate-settlements.csv
+claimbot unseed
 ```
 
-After installing the local launcher, `claimBot` is equivalent to `python claim_assistant.py` and can be run from any directory.
+After installing the local launcher, `claimbot` is equivalent to
+`python claim_assistant.py` and can be run from any directory. The mixed-case
+`claimBot` alias is also installed.
 
 Running `claimbot` with no arguments opens the TUI by default. `claimbot tui`
 does the same thing explicitly.
 
 `claimbot tui` opens a menu-driven terminal UI for dashboard review, queue work,
-eligibility, manual submit, apply, mark, import, validate, and export.
+eligibility, manual submit, apply, auto-submit, Codex research, mark, import,
+validate, export, and unseed/reset.
 
 `manual-submit` opens the browser and helps prefill fields, but it never attempts final submission. After you submit manually, it asks for a confirmation number and updates `settlements.yaml`.
 
@@ -106,9 +105,8 @@ and opens the browser only when the settlement is marked `eligible` or
 manual review, CAPTCHA, proof, notice IDs, login, ambiguity, and confirmation
 tracking.
 
-`claimbot work --mode apply` may attempt final submit, but never as a silent mass
-submit. Each claim still requires `REVIEWED` and exactly `SUBMIT <settlement-id>`
-inside that session.
+`claimbot work --mode apply` may attempt final submit, but each claim still
+requires `REVIEWED` and exactly `SUBMIT <settlement-id>` inside that session.
 
 ## Auto Submit No-Evidence Claims
 
@@ -127,6 +125,12 @@ answers, placeholder URLs, or non-eligible statuses. At runtime it stops each cl
 for manual action if the page shows CAPTCHA, certification text, ambiguous submit
 buttons, or any unresolved requirement.
 
+For a safe preview:
+
+```bash
+claimbot auto-submit --bulk --limit 3 --dry-run
+```
+
 ## Data Files
 
 - `settlements.yaml`: local settlement tracking, eligibility answers, statuses, history, and confirmation metadata.
@@ -135,13 +139,16 @@ buttons, or any unresolved requirement.
 - `screenshots/`: pre-review and post-submit screenshots, ignored by git.
 - `confirmations/`: reserved for local confirmation files, ignored by git.
 - `settlements-export.csv`: default local CSV export path.
+- `research-prompts/`: generated AI research prompts, ignored by git.
+- `candidate-settlements*.csv`: generated candidate CSVs, ignored by git.
+- `backups/`: local tracker backups from `unseed`, ignored by git.
 
 ## Add A Settlement
 
 For first-run setup, use:
 
 ```bash
-python claim_assistant.py setup
+claimbot setup
 ```
 
 This prompts for the private profile values needed for form prefill, saves them to `.env`, creates local runtime directories, optionally imports a tracker CSV, and runs validation.
@@ -149,7 +156,7 @@ This prompts for the private profile values needed for form prefill, saves them 
 Run:
 
 ```bash
-python claim_assistant.py add
+claimbot add
 ```
 
 Then edit `settlements.yaml` to add settlement-specific eligibility questions and any explicit `form_strategy` selectors. Use only official settlement sites and your own truthful answers.
@@ -159,13 +166,69 @@ Then edit `settlements.yaml` to add settlement-specific eligibility questions an
 If you have a CSV with candidate settlements, import it locally:
 
 ```bash
-python claim_assistant.py import-csv /home/brahm/Downloads/possible_class_action_settlements_tracker.csv
+claimbot import-csv /home/brahm/Downloads/possible_class_action_settlements_tracker.csv
 ```
 
 Rows without an official URL are imported with `https://example.com/claim` and are blocked from `apply` or `manual-submit` until you replace `official_url` with a verified official claim site.
 
 If the CSV includes `claim_form_url`, browser flows open that URL while still keeping
 `official_url` for the settlement homepage and final review summary.
+
+## Research Candidates With Codex
+
+The first supported AI provider is Codex because this machine has the Codex CLI.
+The command writes a prompt under `research-prompts/` and can run:
+
+```bash
+codex exec --search --cd /home/brahm/Dev/classActionBot ...
+```
+
+Generate a Codex-ready research prompt:
+
+```bash
+claimbot research --provider codex --output candidate-settlements.csv
+```
+
+Run Codex with web search and write candidate rows:
+
+```bash
+claimbot research --provider codex --output candidate-settlements.csv --run
+```
+
+After reviewing the CSV, import it:
+
+```bash
+claimbot import-csv candidate-settlements.csv
+```
+
+Or let the command import after a successful Codex run:
+
+```bash
+claimbot research --provider codex --output candidate-settlements.csv --run --import-after
+```
+
+Research output is treated as candidate data only. The prompt instructs Codex to
+use live web research, prefer official settlement/admin/refund sources, avoid
+guessing, and leave unknown cells blank or marked `unknown`.
+
+To test discovery from a clean tracker:
+
+```bash
+claimbot unseed
+claimbot research --provider codex --output candidate-settlements.csv --run --import-after
+claimbot validate
+claimbot list
+```
+
+## Reset Seed Data
+
+Back up the current tracker and reset `settlements.yaml` to the placeholder seed:
+
+```bash
+claimbot unseed
+```
+
+Backups are written to `backups/`, which is ignored by git.
 
 ## GitHub SSH Remote
 

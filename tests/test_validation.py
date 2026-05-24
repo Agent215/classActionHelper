@@ -5,6 +5,7 @@ from datetime import date
 from class_action_helper.eligibility import determine_status_from_answers
 from class_action_helper.cli import _build_auto_submit_queue, _build_work_queue, build_parser
 from class_action_helper.models import is_expired, validate_settlements
+from class_action_helper.research import build_research_prompt
 from class_action_helper.safety import SubmissionGuard
 
 
@@ -152,3 +153,31 @@ def test_parser_includes_auto_submit_command():
     assert args.func.__name__ == "cmd_auto_submit"
     assert args.bulk is True
     assert args.limit == 2
+
+
+def test_parser_includes_research_command():
+    args = build_parser().parse_args(["research", "--provider", "codex", "--output", "candidates.csv"])
+    assert args.func.__name__ == "cmd_research"
+    assert args.provider == "codex"
+    assert args.output == "candidates.csv"
+
+
+def test_parser_includes_unseed_command():
+    args = build_parser().parse_args(["unseed", "--yes"])
+    assert args.func.__name__ == "cmd_unseed"
+    assert args.yes is True
+
+
+def test_research_prompt_contains_csv_requirements(tmp_path):
+    output = tmp_path / "candidates.csv"
+    prompt = build_research_prompt(
+        output_path=output,
+        geography="Pennsylvania",
+        categories="privacy",
+        days_ahead=90,
+        limit=5,
+    )
+    assert str(output) in prompt
+    assert "Use live web research" in prompt
+    assert "id,name,category" in prompt
+    assert "Do not invent eligibility" in prompt
