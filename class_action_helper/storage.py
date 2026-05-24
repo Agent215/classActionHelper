@@ -96,6 +96,17 @@ def load_env_profile(path: Path = ENV_PATH) -> dict[str, str]:
     return profile
 
 
+def save_env_profile(profile: dict[str, Any], path: Path = ENV_PATH) -> None:
+    lines = [
+        "# Private local profile for class-action-helper.",
+        "# This file is ignored by git.",
+    ]
+    for field_name, env_name in ENV_PROFILE_MAP.items():
+        value = str(profile.get(field_name, ""))
+        lines.append(f"{env_name}={_quote_env_value(value)}")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _parse_env_file(path: Path) -> dict[str, str]:
     values: dict[str, str] = {}
     with path.open("r", encoding="utf-8") as handle:
@@ -108,6 +119,14 @@ def _parse_env_file(path: Path) -> dict[str, str]:
             value = value.strip().strip("'").strip('"')
             values[key] = value
     return values
+
+
+def _quote_env_value(value: str) -> str:
+    if not value:
+        return ""
+    if any(char.isspace() for char in value) or any(char in value for char in "'\"#="):
+        return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+    return value
 
 
 def export_csv(settlements: list[dict[str, Any]], path: Path) -> None:

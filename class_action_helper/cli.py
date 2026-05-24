@@ -33,11 +33,14 @@ from .storage import (
     ENV_PATH,
     PROFILE_PATH,
     SETTLEMENTS_PATH,
+    ensure_local_dirs,
     export_csv,
     find_settlement,
     init_profile,
+    load_env_profile,
     load_profile,
     load_settlements,
+    save_env_profile,
     save_settlements,
 )
 
@@ -56,6 +59,7 @@ def build_parser() -> argparse.ArgumentParser:
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     subcommands.add_parser("init-profile").set_defaults(func=cmd_init_profile)
+    subcommands.add_parser("setup").set_defaults(func=cmd_setup)
     subcommands.add_parser("list").set_defaults(func=cmd_list)
     subcommands.add_parser("add").set_defaults(func=cmd_add)
 
@@ -115,6 +119,53 @@ def cmd_init_profile(_: argparse.Namespace) -> int:
     else:
         _print(f"{ENV_PATH.name} already exists; leaving it unchanged.")
     return 0
+
+
+def cmd_setup(_: argparse.Namespace) -> int:
+    ensure_local_dirs()
+    _print("First-run setup. Values are stored only in .env, which is ignored by git.")
+
+    existing = load_env_profile() if ENV_PATH.exists() else {}
+    defaults = {
+        "city": existing.get("city") or "Philadelphia",
+        "state": existing.get("state") or "PA",
+        "country": existing.get("country") or "United States",
+    }
+    profile = dict(existing)
+
+    required_fields = [
+        ("first_name", "First name"),
+        ("last_name", "Last name"),
+        ("email", "Email"),
+        ("phone", "Phone"),
+        ("address1", "Address line 1"),
+        ("city", "City"),
+        ("state", "State"),
+        ("zip", "ZIP/postal code"),
+        ("country", "Country"),
+    ]
+    optional_fields = [
+        ("address2", "Address line 2"),
+        ("payment_preference", "Payment preference"),
+        ("paypal_email", "PayPal email"),
+        ("venmo", "Venmo"),
+        ("zelle_email_or_phone", "Zelle email or phone"),
+    ]
+
+    for field_name, label in required_fields:
+        profile[field_name] = _prompt_setup_value(label, profile.get(field_name) or defaults.get(field_name, ""), required=True)
+    for field_name, label in optional_fields:
+        profile[field_name] = _prompt_setup_value(label, profile.get(field_name, ""), required=False)
+
+    save_env_profile(profile)
+    _print(f"Saved private profile to {ENV_PATH.name}.")
+
+    csv_path = input("Optional tracker CSV to import now (press Enter to skip): ").strip()
+    if csv_path:
+        imported, updated = import_csv_file(Path(csv_path).expanduser())
+        _print(f"Imported {imported} new settlements and updated {updated} existing settlements.")
+
+    return cmd_validate(argparse.Namespace())
 
 
 def cmd_list(_: argparse.Namespace) -> int:
@@ -186,9 +237,20 @@ def cmd_add(_: argparse.Namespace) -> int:
 
 def cmd_import_csv(args: argparse.Namespace) -> int:
     source = Path(args.path).expanduser()
-    if not source.exists():
+    try:
+        imported, updated = import_csv_file(source)
+    except FileNotFoundError:
         _print(f"CSV not found: {source}")
         return 1
+
+    _print(f"Imported {imported} new settlements and updated {updated} existing settlements.")
+    _print("Rows without URLs use https://example.com/claim and are blocked from apply until replaced.")
+    return 0
+
+
+def import_csv_file(source: Path) -> tuple[int, int]:
+    if not source.exists():
+        raise FileNotFoundError(source)
 
     settlements = load_settlements()
     by_id = {str(item.get("id")): item for item in settlements}
@@ -252,9 +314,7 @@ def cmd_import_csv(args: argparse.Namespace) -> int:
                 imported += 1
 
     save_settlements(settlements)
-    _print(f"Imported {imported} new settlements and updated {updated} existing settlements.")
-    _print("Rows without URLs use https://example.com/claim and are blocked from apply until replaced.")
-    return 0
+    return imported, updated
 
 
 def cmd_edit(args: argparse.Namespace) -> int:
@@ -449,6 +509,17 @@ def _prompt_bool(label: str) -> bool:
         if value in {"n", "no"}:
             return False
         print("Please answer yes or no.")
+
+
+def _prompt_setup_value(label: str, existing: str, *, required: bool) -> str:
+    while True:
+        suffix = f" [{existing}]" if existing else ""
+        value = input(f"{label}{suffix}: ").strip()
+        if not value and existing:
+            return existing
+        if value or not required:
+            return value
+        print("Required for setup.")
 
 
 def _yes_no(value: Any) -> str:

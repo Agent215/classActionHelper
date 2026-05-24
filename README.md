@@ -45,6 +45,7 @@ ZELLE_EMAIL_OR_PHONE=
 ## Common Commands
 
 ```bash
+python claim_assistant.py setup
 python claim_assistant.py init-profile
 python claim_assistant.py add
 python claim_assistant.py import-csv /path/to/possible_class_action_settlements_tracker.csv
@@ -72,6 +73,14 @@ If the tool cannot confidently identify the submit button, sees a CAPTCHA/bot ch
 - `settlements-export.csv`: default local CSV export path.
 
 ## Add A Settlement
+
+For first-run setup, use:
+
+```bash
+python claim_assistant.py setup
+```
+
+This prompts for the private profile values needed for form prefill, saves them to `.env`, creates local runtime directories, optionally imports a tracker CSV, and runs validation.
 
 Run:
 
