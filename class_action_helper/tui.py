@@ -41,38 +41,6 @@ _________ .__         .__       __________        __
         \/          \/         \/       \/
 """.strip("\n")
 
-CLAIMBOT_ART = r"""
-                                      ∞×××××××××××××××××××××÷
-                                      ××            ×××   ×××
-                                       π××              ×××
-                                         ×××           ××
-                                           ×× ≠×××××××××
-                                            ×××××××××××
-                                            ××∞      ××
-                                           ×××××××××××××
-                                        =××            =×××
-                                      ×××                 ×××
-                                     ××        ××××        ×××
-                                   ××≠        ≈×× ××××       ×××
-                                 ∞××       ×××        ××∞     ×××
-                                ××≠       ××π××× ≠×××  ××       ××π
-                               ××         × ×× × ×× ××  ××       ×××
-                              ××          ×× ×××π××  =××          ×××
-                             ××            ×××   ∞××               ×××
-                            ××               ××××   ×××             ×××
-                           ××                  ×× ×××∞ ××            ××
-                           ××             ×××× ×× ×  ××××            ×××
-                           ××             ×∞×× ×× ×  ××≠×             ××
-                           ××             ∞×∞≠××× ××× ×××             ××
-                           ××               ××××  ×××××               ××
-                            ××                 ×= ×∞                 ×××
-                             ××                 ×××                 ≠××
-                              ×××                                  ×××
-                                ××××                             ××××
-                                   ××××××≈                   ≠×××××
-                                       =×××××××××××××××××××××××
-""".strip("\n")
-
 
 def run_tui() -> int:
     ensure_local_dirs()
@@ -129,7 +97,6 @@ def _render_dashboard(settlements: list[dict[str, Any]], *, animate: bool = Fals
     due_soon = sum(1 for item in settlements if _days(item) is not None and 0 <= _days(item) <= 14)
     header = f"Settlements: {total} | Actionable: {actionable} | Submitted: {submitted} | Due in 14 days: {due_soon}"
     console.print(f"[bold green]{CLAIMBOT_BANNER}[/bold green]")
-    console.print(f"[green]{CLAIMBOT_ART}[/green]")
     if animate:
         time.sleep(0.25)
     console.print(Panel(header, title="claimbot", subtitle="w work | b bulk | e eligibility | m manual | a apply | s auto | r research | u unseed | k mark | i import | v validate | x export | q quit"))
