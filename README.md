@@ -222,7 +222,7 @@ claimbot list
 
 ## Reset Seed Data
 
-Back up the current tracker and reset `settlements.yaml` to the placeholder seed:
+Back up the current tracker and reset `settlements.yaml` to an empty tracker:
 
 ```bash
 claimbot unseed

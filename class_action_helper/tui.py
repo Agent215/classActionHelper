@@ -211,7 +211,7 @@ def _research() -> None:
 
 
 def _unseed() -> None:
-    console.print("[bold yellow]This backs up settlements.yaml, then resets it to the placeholder seed.[/bold yellow]")
+    console.print("[bold yellow]This backs up settlements.yaml, then resets it to an empty tracker.[/bold yellow]")
     if Confirm.ask("Unseed current settlement data?", default=False):
         cmd_unseed(argparse.Namespace(yes=True))
 

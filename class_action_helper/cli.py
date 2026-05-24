@@ -42,7 +42,7 @@ from .storage import (
     load_env_profile,
     load_profile,
     load_settlements,
-    placeholder_settlements,
+    empty_settlements,
     save_env_profile,
     save_settlements,
 )
@@ -96,7 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
     subcommands.add_parser("validate").set_defaults(func=cmd_validate)
 
     unseed = subcommands.add_parser("unseed")
-    unseed.add_argument("--yes", action="store_true", help="Confirm resetting settlements.yaml to the placeholder seed.")
+    unseed.add_argument("--yes", action="store_true", help="Confirm resetting settlements.yaml to an empty tracker.")
     unseed.set_defaults(func=cmd_unseed)
 
     eligibility = subcommands.add_parser("eligibility")
@@ -483,14 +483,14 @@ def cmd_validate(_: argparse.Namespace) -> int:
 
 def cmd_unseed(args: argparse.Namespace) -> int:
     if not args.yes:
-        typed = input("This backs up settlements.yaml and resets it to the placeholder seed. Type UNSEED to continue: ").strip()
+        typed = input("This backs up settlements.yaml and resets it to an empty tracker. Type UNSEED to continue: ").strip()
         if typed != "UNSEED":
             _print("Unseed cancelled.")
             return 1
     backup_path = backup_settlements()
-    save_settlements(placeholder_settlements())
+    save_settlements(empty_settlements())
     _print(f"Backed up current settlements to {backup_path}.")
-    _print("Reset settlements.yaml to the placeholder seed.")
+    _print("Reset settlements.yaml to an empty tracker.")
     return cmd_validate(argparse.Namespace())
 
 
