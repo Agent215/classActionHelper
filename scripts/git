@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REAL_GIT="/usr/bin/git"
+PROJECT_ROOT="/home/brahm/Dev/classActionBot"
+
+cwd="$(pwd -P)"
+case "$cwd" in
+  "$PROJECT_ROOT"|"$PROJECT_ROOT"/*)
+    if [[ -d "$PROJECT_ROOT/.git-local" ]]; then
+      exec "$REAL_GIT" --git-dir="$PROJECT_ROOT/.git-local" --work-tree="$PROJECT_ROOT" "$@"
+    fi
+    ;;
+esac
+
+exec "$REAL_GIT" "$@"

@@ -12,6 +12,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
 install -m 755 scripts/claimBot ~/.local/bin/claimBot
+install -m 755 scripts/claimbot ~/.local/bin/claimbot
+```
+
+If this Codex workspace has a read-only `.git` mountpoint, the repo uses `.git-local`
+for Git metadata. Install the narrow wrapper to make normal `git` commands work in
+this project:
+
+```bash
+install -m 755 scripts/git ~/.local/bin/git
 ```
 
 ## Private Profile

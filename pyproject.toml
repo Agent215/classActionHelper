@@ -11,6 +11,7 @@ dependencies = [
 
 [project.scripts]
 claimBot = "class_action_helper.cli:main"
+claimbot = "class_action_helper.cli:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
