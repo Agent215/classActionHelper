@@ -77,6 +77,21 @@ def build_parser() -> argparse.ArgumentParser:
     eligibility.add_argument("--id", required=True)
     eligibility.set_defaults(func=cmd_eligibility)
 
+    work = subcommands.add_parser("work")
+    work.add_argument("--id", help="Work a specific settlement instead of the next due settlement.")
+    work.add_argument("--bulk", action="store_true", help="Work multiple due settlements sequentially.")
+    work.add_argument("--limit", type=int, default=1, help="Maximum settlements to process in this run.")
+    work.add_argument(
+        "--mode",
+        choices=("eligibility", "manual-submit", "apply"),
+        default="manual-submit",
+        help="How far to take each eligible settlement. apply still requires exact per-claim approval.",
+    )
+    work.add_argument("--include-blocked", action="store_true", help="Include needs_notice_id/proof/login items in the queue.")
+    work.add_argument("--allow-expired", action="store_true")
+    add_browser_args(work)
+    work.set_defaults(func=cmd_work)
+
     apply = subcommands.add_parser("apply")
     add_browser_args(apply)
     apply.add_argument("--id", required=True)
@@ -397,6 +412,74 @@ def cmd_eligibility(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_work(args: argparse.Namespace) -> int:
+    if args.bulk and args.mode == "apply":
+        _print("Bulk apply is allowed only as a sequential queue. Each claim still requires REVIEWED and exact SUBMIT <id> approval.")
+    elif args.mode == "apply":
+        _print("Apply mode may attempt one final submit only after exact per-claim approval.")
+
+    settlements = load_settlements()
+    queue = _build_work_queue(
+        settlements,
+        settlement_id=args.id,
+        limit=args.limit if args.bulk else 1,
+        allow_expired=args.allow_expired,
+        include_blocked=args.include_blocked,
+    )
+    if not queue:
+        _print("No matching settlements are ready for work.")
+        return 0
+
+    processed = 0
+    for settlement in queue:
+        settlement_id = str(settlement.get("id"))
+        _print(f"\nNext: {settlement.get('name')} ({settlement_id})")
+        _print(f"Deadline: {settlement.get('deadline')} | Status: {settlement.get('status')}")
+
+        if not _confirm_work_item(settlement, args.bulk):
+            append_history(settlement, "Skipped by work queue.")
+            save_settlements(settlements)
+            continue
+
+        if _needs_eligibility(settlement):
+            answers = ask_eligibility_questions(settlement)
+            status = apply_eligibility_answers(settlement, answers)
+            save_settlements(settlements)
+            _print(f"Eligibility saved. New status: {status}.")
+
+        if args.mode == "eligibility":
+            processed += 1
+            continue
+
+        if settlement.get("status") not in {"eligible", "ready_for_review"}:
+            _print(f"Not opening browser because status is {settlement.get('status')}.")
+            processed += 1
+            continue
+
+        browser_args = argparse.Namespace(
+            id=settlement_id,
+            allow_expired=args.allow_expired,
+            headless=args.headless,
+            slow_mo=args.slow_mo,
+            dry_run=args.dry_run,
+            no_submit=args.no_submit or args.mode == "manual-submit",
+            overwrite=args.overwrite,
+        )
+        if args.mode == "apply":
+            cmd_apply(browser_args)
+        else:
+            cmd_manual_submit(browser_args)
+        processed += 1
+
+        if args.bulk:
+            keep_going = input("Continue to the next queued settlement? [yes/no]: ").strip().lower()
+            if keep_going not in {"y", "yes"}:
+                break
+
+    _print(f"Work queue processed {processed} settlement(s).")
+    return 0
+
+
 def cmd_apply(args: argparse.Namespace) -> int:
     return _run_browser_flow(args, manual_only=False)
 
@@ -472,6 +555,52 @@ def _require_settlement(settlements: list[dict[str, Any]], settlement_id: str) -
     if not settlement:
         raise SystemExit(f"No settlement found with id {settlement_id}.")
     return settlement
+
+
+def _build_work_queue(
+    settlements: list[dict[str, Any]],
+    *,
+    settlement_id: str | None,
+    limit: int,
+    allow_expired: bool,
+    include_blocked: bool,
+) -> list[dict[str, Any]]:
+    if settlement_id:
+        return [_require_settlement(settlements, settlement_id)]
+
+    blocked = {"needs_notice_id", "needs_proof", "needs_login"}
+    excluded = {"submitted", "skipped", "not_eligible", "error"}
+    queue = []
+    for settlement in settlements:
+        status = str(settlement.get("status", ""))
+        if status in excluded:
+            continue
+        if status in blocked and not include_blocked:
+            continue
+        try:
+            if is_expired(settlement) and not allow_expired:
+                continue
+        except Exception:
+            continue
+        queue.append(settlement)
+
+    queue.sort(key=lambda item: (parse_date(item.get("deadline")), str(item.get("id", ""))))
+    return queue[: max(limit, 1)]
+
+
+def _needs_eligibility(settlement: dict[str, Any]) -> bool:
+    if not settlement.get("eligibility_questions"):
+        return False
+    if not settlement.get("eligibility_answers"):
+        return True
+    return settlement.get("status") in {"todo", "needs_review", "started"}
+
+
+def _confirm_work_item(settlement: dict[str, Any], bulk: bool) -> bool:
+    if not bulk:
+        return True
+    answer = input(f"Work {settlement.get('id')} now? [yes/no]: ").strip().lower()
+    return answer in {"y", "yes"}
 
 
 def _safe_days_remaining(settlement: dict[str, Any]) -> int | None:

@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from class_action_helper.eligibility import determine_status_from_answers
+from class_action_helper.cli import _build_work_queue
 from class_action_helper.models import is_expired, validate_settlements
 from class_action_helper.safety import SubmissionGuard
 
@@ -92,3 +93,18 @@ def test_submission_guard_requires_exact_submit_phrase(tmp_path):
     assert not decision.allowed
     assert any("Typed approval must exactly match" in reason for reason in decision.reasons)
 
+
+def test_work_queue_sorts_by_deadline_and_skips_blocked():
+    settlements = [
+        settlement(id="later", deadline="2099-02-01", status="todo"),
+        settlement(id="blocked", deadline="2099-01-01", status="needs_notice_id"),
+        settlement(id="earlier", deadline="2099-01-15", status="todo"),
+    ]
+    queue = _build_work_queue(
+        settlements,
+        settlement_id=None,
+        limit=2,
+        allow_expired=False,
+        include_blocked=False,
+    )
+    assert [item["id"] for item in queue] == ["earlier", "later"]

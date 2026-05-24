@@ -58,6 +58,8 @@ ZELLE_EMAIL_OR_PHONE=
 claimBot --help
 claimBot setup
 claimBot list
+claimBot work
+claimBot work --bulk --limit 3
 python claim_assistant.py setup
 python claim_assistant.py init-profile
 python claim_assistant.py add
@@ -77,6 +79,27 @@ After installing the local launcher, `claimBot` is equivalent to `python claim_a
 `apply` also opens the browser and prefills fields, then saves a pre-review screenshot and prints a final review summary. It will only attempt one final submit if you type `REVIEWED` and then exactly `SUBMIT <settlement-id>`. If a certification checkbox is detected, it also requires exactly `CERTIFY <settlement-id>` before checking it.
 
 If the tool cannot confidently identify the submit button, sees a CAPTCHA/bot check, finds unresolved notice/proof/login requirements, or lacks saved eligibility answers, it stops and marks the claim for manual action.
+
+## Work Queue
+
+Use `work` to automate the next safe step without choosing IDs manually:
+
+```bash
+claimbot work
+claimbot work --mode eligibility
+claimbot work --bulk --limit 3
+claimbot work --id toms-of-maine-toothpaste
+```
+
+The queue sorts by deadline, asks eligibility questions when answers are missing,
+and opens the browser only when the settlement is marked `eligible` or
+`ready_for_review`. Bulk mode is sequential and still stops for eligibility,
+manual review, CAPTCHA, proof, notice IDs, login, ambiguity, and confirmation
+tracking.
+
+`claimbot work --mode apply` may attempt final submit, but never as a silent mass
+submit. Each claim still requires `REVIEWED` and exactly `SUBMIT <settlement-id>`
+inside that session.
 
 ## Data Files
 
